@@ -1,0 +1,190 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Display/Partials/ExternalModals.cshtml")
+@Html.Partial("~/Views/Shared/GeneralModals.cshtml")
+
+@section head{
+    <link href="~/Content/Display/External.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Map.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Pagination.css" rel="stylesheet" />
+}
+
+@section header {
+    <div class="custom-full-height custom-flex-row custom-header">
+        <div class="custom-flex-12 custom-flex-center">
+            <div class="hit-logo"></div>
+        </div>
+        <div class="custom-flex-13 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-phone custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-phone-text" data-bind="text: $root.selectedPhone"></div>
+        </div>
+        <div class="custom-flex-15 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-user custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-user-text" data-bind="text: $root.currentStaff() != null ? $root.currentStaff().Username : ''"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center" data-bind="with: $root.signalR">
+            <div class="custom-flex-center" data-bind="css: { 'background-round-success' : status() == connectionStatusesEnum.Connected, 'background-round-warning' : (status() == connectionStatusesEnum.Connecting || status() == connectionStatusesEnum.Reconnecting), 'background-round-error' : status() == connectionStatusesEnum.Disconnected }">
+                <i class="fa fa-wifi custom-fa-faint"></i>
+            </div>
+        </div>
+        <div class="custom-flex-30">
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-center custom-cursor custom-header-notification" data-bind="click: $root.OpenFailedOrders"><i class="fa fa-bell custom-fa-faint"></i></div>
+            <div class="custom-flex-center custom-text-white custom-text-extra-small custom-notification" data-bind="text: $root.failedOrders().length, visible: $root.failedOrders().length > 0"></div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-small" data-bind="text: moment.utc().format('DD-MM-YYYY')"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.computedClock"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-5 custom-flex-center custom-header-navigation" data-bind="click: $root.OpenGeneralActions, clickBubble: false">
+                <div class="custom-flex-center">
+                    <icon class="fa fa-bars fa-2x custom-fa-faint"></icon>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="custom-body">
+    <div class="custom-full-height custom-flex-column external-container">
+        <div class="custom-flex-7 external-order-header">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Store', null)"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Date', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Name', null)"></div>
+                <div class="custom-flex-13 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Phone', null)"></div>
+                <div class="custom-flex-17 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Address', null)"></div>
+                <div class="custom-flex-8 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Origin', null)"></div>
+                <div class="custom-flex-12 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Id', null)"></div>
+                <div class="custom-flex-8 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Total', null)"></div>
+                <div class="custom-flex-8 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Actions', null)"></div>
+            </div>
+        </div>
+        <div class="custom-flex-86 custom-flex-column external-order-body" data-bind="with: $root.pagination">
+            <div class="custom-flex-90 custom-flex-column" id="scrollbar-style" data-bind="foreach: entityList">
+                <div>
+                    <div class="custom-flex-column pagination-entity-list-entity external-order-entity">
+                        <div class="custom-flex-65 custom-flex-row external-order-entity-order">
+                            <div class="custom-flex-10 custom-flex-start custom-text-black" data-bind="text: $root.storeOptions()[Order.StoreId]"></div>
+                            <div class="custom-flex-10 custom-flex-center custom-text-black" data-bind="text: Order.OrderDate != null && Order.OrderDate != '' ? moment.utc(Order.OrderDate).format('DD-MM-YYYY HH:mm') : ''"></div>
+                            <div class="custom-flex-14 custom-flex-start custom-text-black custom-text-small" data-bind="text: (Customer.FirstName != null && Customer.FirstName != '' ? Customer.FirstName : '') + (Customer.FirstName != null && Customer.FirstName != '' && Customer.LastName != null && Customer.LastName != '' ? ' ' : '') + (Customer.LastName != null && Customer.LastName != '' ? Customer.LastName : '')"></div>
+                            <div class="custom-flex-13 custom-flex-start custom-text-black" data-bind="text: Customer.Mobile != null ? Customer.Mobile : Customer.Phone1 != null ? Customer.Phone1 : Customer.Phone2 != null ? Customer.Phone2 : ''"></div>
+                            <div class="custom-flex-17 custom-flex-start custom-text-black custom-text-small" data-bind="text: (ShippingAddress.AddressStreet != null && ShippingAddress.AddressStreet != '' ? ShippingAddress.AddressStreet : '') + (ShippingAddress.AddressStreet != null && ShippingAddress.AddressStreet != '' && ShippingAddress.AddressNumber != null && ShippingAddress.AddressNumber != '' ? ' ' : '') + (ShippingAddress.AddressNumber != null && ShippingAddress.AddressNumber != '' ? ShippingAddress.AddressNumber : '')"></div>
+                            <div class="custom-flex-8 custom-flex-start custom-text-black" data-bind="text: $root.orderOriginOptions()[Order.Origin]"></div>
+                            <div class="custom-flex-12 custom-flex-center custom-text-black" data-bind="text: Order.ExtId1"></div>
+                            <div class="custom-flex-6 custom-flex-end custom-text-black" data-bind="text: Order.Total != null ? Order.Total.toFixed(2) : ''"></div>
+                            <div class="custom-flex-2 custom-flex-center custom-text-black custom-text-small"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                            <div class="custom-flex-8 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-simple external-order-action" data-bind="click: $root.EditExternalOrder.bind($data, $data), clickBubble: false" tabindex="-1"><i class="fa fa-edit custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                        <div class="custom-flex-35 custom-flex-start custom-text-black external-order-entity-error" data-bind="text: Order.Errors.length > 130 ? Order.Errors.substring(0, 130) + ' ...' : Order.Errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <!-- ko if: totalPages() > 1 && !scrollable() -->
+                <ul class="pagination pagination-pagination">
+                    <li><a href="#" data-bind="click: MoveFirst, clickBubble: false">&laquo;</a></li>
+                    <li><a href="#" data-bind="click: MovePrevious, clickBubble: false">&lt;</a></li>
+                    <!-- ko if: hasLeft() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko foreach: new Array(totalPages()) -->
+                    <!-- ko if: ($index() >= $parent.activePage() && $index() <= $parent.activePage() + 2) || ($index() <= $parent.activePage() && $index() >= $parent.activePage() - 2) -->
+                    <li data-bind="css: { active: ($index()) == $parent.activePage() }"><a href="#" data-bind="text: $index() + 1, click: $parent.MoveSpecific.bind($data, $index()), clickBubble: false"></a></li>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: hasRight() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <li><a href="#" data-bind="click: MoveNext, clickBubble: false">&gt;</a></li>
+                    <li><a href="#" data-bind="click: MoveLast, clickBubble: false">&raquo;</a></li>
+                </ul>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="custom-flex-7 custom-flex-row">
+            <div class="custom-flex-79"></div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black external-orders-multitude" data-bind="click: $root.SelectExternalOrdersMultitude.bind($data, 10), clickBubble: false, css: { 'custom-default-button-info' : $root.ordersMultitude() == 10 }" tabindex="-1"><div>10</div></button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black external-orders-multitude" data-bind="click: $root.SelectExternalOrdersMultitude.bind($data, 20), clickBubble: false, css: { 'custom-default-button-info' : $root.ordersMultitude() == 20 }" tabindex="-1"><div>20</div></button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black external-orders-multitude" data-bind="click: $root.SelectExternalOrdersMultitude.bind($data, 50), clickBubble: false, css: { 'custom-default-button-info' : $root.ordersMultitude() == 50 }" tabindex="-1"><div>50</div></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+    <div class="custom-full-height custom-flex-row external-buttons-container">
+        <div class="custom-flex-100 custom-flex-center">
+            <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold external-actions-button" data-bind="click: $root.ResendAllExternalOrders, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('RetryCaps', null)"></div>&nbsp;<i class="fa fa-redo custom-fa-faint"></i></button>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Display/ExternalViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/map-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/pagination-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/PaginationModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/CustomerModels.js"></script>
+    <script src="~/Scripts/Models/ExternalModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <script src="~/Scripts/Models/StoreModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/Map.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/Pagination.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/Customer.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script src="~/Scripts/Enumerators/Store.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new ExternalViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                        }
+                        else {
+                        }
+                    });
+                });
+            }
+        }, 100);
+    </script>
+}

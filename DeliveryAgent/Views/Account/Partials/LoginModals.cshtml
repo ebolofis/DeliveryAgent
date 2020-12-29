@@ -1,0 +1,20 @@
+﻿<div id="emptyMap" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('MapsCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center">
+            <div class="custom-text-black" data-bind="text: language.Translate('UninitializedMapMessage', null)"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.CallbackGetConfigurationConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.CallbackGetConfigurationCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

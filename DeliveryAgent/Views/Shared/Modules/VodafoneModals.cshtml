@@ -1,0 +1,28 @@
+﻿<div id="vodafoneDiscounts" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-medium custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('VodafoneDiscountsCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 custom-flex-column vodafone-discounts-container">
+            <div class="custom-flex-15 custom-flex-row">
+                <div class="custom-flex-20 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('CodeColon', null)"></div>
+                <div class="custom-flex-80 custom-flex-center">
+                    <input class="custom-input vodafone-discounts-code-input" id="vodafoneCode" data-bind="value: vodafoneCodeInput(), click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'vodafoneCodeInput', 'vodafoneCode', 'vodafoneCode', null, null, keyboardTypesEnum.Alphanumeric), clickBubble: false, attr: { 'placeholder' : language.Translate('Code', null)}" type="text" autocomplete="off" tabindex="-1" />
+                </div>
+            </div>
+            <div class="vodafone-discounts-divider"></div>
+            <div class="custom-flex-85 custom-flex-column" id="scrollbar-style" data-bind="foreach: $root.vodafoneDiscounts">
+                <div>
+                    <div class="custom-flex-center vodafone-discounts-button-container">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold vodafone-discounts-button" data-bind="text: Description, click: $root.ApplyVodafoneDiscount.bind($data, $data), clickBubble: false" tabindex="-1"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: $root.CloseVodafoneDiscounts, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>

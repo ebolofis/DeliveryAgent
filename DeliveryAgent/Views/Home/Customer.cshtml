@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Home/Partials/CustomerModals.cshtml")
+@Html.Partial("~/Views/Home/Partials/CustomerTemplatesSearch.cshtml")
+@Html.Partial("~/Views/Home/Partials/CustomerTemplatesInsert.cshtml")
+@Html.Partial("~/Views/Shared/Modules/LoyaltyModals.cshtml")
+@Html.Partial("~/Views/Shared/Modules/GoodysModals.cshtml")
+@Html.Partial("~/Views/Shared/GeneralModals.cshtml")
+
+@section head{
+    <link href="~/Content/Home/Customer.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Keyboard.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Map.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Pagination.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Loyalty.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Goodys.css" rel="stylesheet" />
+}
+
+@section header {
+    <div class="custom-full-height custom-flex-row custom-header">
+        <div class="custom-flex-12 custom-flex-center">
+            <div class="hit-logo"></div>
+        </div>
+        <div class="custom-flex-13 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-phone custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-phone-text" data-bind="text: $root.selectedPhone"></div>
+        </div>
+        <div class="custom-flex-15 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-user custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-user-text" data-bind="text: $root.currentStaff() != null ? $root.currentStaff().Username : ''"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center" data-bind="with: $root.signalR">
+            <div class="custom-flex-center" data-bind="css: { 'background-round-success' : status() == connectionStatusesEnum.Connected, 'background-round-warning' : (status() == connectionStatusesEnum.Connecting || status() == connectionStatusesEnum.Reconnecting), 'background-round-error' : status() == connectionStatusesEnum.Disconnected }">
+                <i class="fa fa-wifi custom-fa-faint"></i>
+            </div>
+        </div>
+        <div class="custom-flex-30">
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-center custom-cursor custom-header-notification" data-bind="click: $root.OpenFailedOrders"><i class="fa fa-bell custom-fa-faint"></i></div>
+            <div class="custom-flex-center custom-text-white custom-text-extra-small custom-notification" data-bind="text: $root.failedOrders().length, visible: $root.failedOrders().length > 0"></div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-small" data-bind="text: moment.utc().format('DD-MM-YYYY')"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.computedClock"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-5 custom-flex-center custom-header-navigation" data-bind="click: $root.OpenGeneralActions, clickBubble: false">
+                <div class="custom-flex-center">
+                    <icon class="fa fa-bars fa-2x custom-fa-faint"></icon>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="custom-body">
+    <div class="custom-full-height customer-container">
+        <!-- ko if: $root.navigationAction() == "Search" -->
+        <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-search-template' }"></div>
+        <!-- /ko -->
+        <!-- ko if: $root.navigationAction() == "Insert" -->
+        <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-insert-template' }"></div>
+        <!-- /ko -->
+    </div>
+</div>
+
+@section footer{
+    <div class="custom-full-height custom-flex-row customer-buttons-container">
+        <div class="custom-flex-33 custom-flex-center">
+            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold customer-actions-button" data-bind="click: $root.Navigate.bind($data, 1), clickBubble: false, css: { 'custom-default-button-success' : $root.navigationAction() == 'Insert' }" tabindex="-1"><div data-bind="text: language.Translate('InsertCaps', null)"></div>&nbsp;<i class="fa fa-user-plus custom-fa-faint"></i></button>
+        </div>
+        <div class="custom-flex-33 custom-flex-center">
+            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold customer-actions-button" data-bind="click: $root.Navigate.bind($data, 0), clickBubble: false, css: { 'custom-default-button-success' : $root.navigationAction() == 'Search' }" tabindex="-1"><div data-bind="text: language.Translate('CustomerCaps', null)"></div>&nbsp;<i class="fa fa-user custom-fa-faint"></i></button>
+        </div>
+        <div class="custom-flex-34 custom-flex-center">
+            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold customer-actions-button" data-bind="click: $root.Navigate.bind($data, 2), clickBubble: false, css: { 'custom-default-button-success' : $root.navigationAction() == 'Order' }" tabindex="-1"><div data-bind="text: language.Translate('OrderCaps', null)"></div>&nbsp;<i class="fa fa-file-alt custom-fa-faint"></i></button>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Home/CustomerViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/keyboard-module.js"></script>
+    <script src="~/Scripts/Modules/map-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/pagination-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <script src="~/Scripts/Modules/loyalty-module.js"></script>
+    <script src="~/Scripts/Modules/goodys-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/PaginationModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/CustomerModels.js"></script>
+    <script src="~/Scripts/Models/MessageModels.js"></script>
+    <script src="~/Scripts/Models/OrderModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <script src="~/Scripts/Models/StoreModels.js"></script>
+    <script src="~/Scripts/Models/LoyaltyModels.js"></script>
+    <script src="~/Scripts/Models/GoodysModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/Keyboard.js"></script>
+    <script src="~/Scripts/Enumerators/Map.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/Pagination.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/Customer.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script src="~/Scripts/Enumerators/Store.js"></script>
+    <script src="~/Scripts/Enumerators/Loyalty.js"></script>
+    <script src="~/Scripts/Enumerators/Goodys.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new CustomerViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                            if (vm.navigationAction() == "Search" && !$("#insertComplaint").is(":visible") && !$("#viewOrder").is(":visible") && !$("#orderModificationConfirmation").is(":visible") && !$("#cancelOrder").is(":visible") && !$("#cancelOrderPasswordConfirmation").is(":visible") && !$("#failedOrders").is(":visible") && !$("#generalActions").is(":visible") && !$("#addLoyaltyAdministratorAuthorization").is(":visible") && !$("#addLoyaltyPoints").is(":visible") && !$("#goodysLoyaltyRegisterCustomer").is(":visible") && !$("#goodysLoyaltyActivateCustomer").is(":visible") && !$("#goodysLoyaltyPendingCustomer").is(":visible") && !$(".customer-message-message-description-input").is(":focus") && !$(".customer-message-customer-description-input").is(":focus")) {
+                                vm.SearchCustomer();
+                            }
+                        }
+                        else {
+                        }
+                    });
+                });
+            }
+        }, 100);
+    </script>
+}

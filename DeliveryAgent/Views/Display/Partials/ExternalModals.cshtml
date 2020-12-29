@@ -1,0 +1,345 @@
+﻿<div id="editExternalOrder" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-extra-large-extra-large custom-flex-column">
+        <div class="custom-flex-10 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('EditOrderCaps', null)"></div>
+        </div>
+        <div class="custom-flex-80 external-selected-order-container" data-bind="with: $root.selectedExternalOrder">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-6 custom-flex-center custom-text-black custom-text-bold custom-text-medium-large external-selected-order-header" data-bind="text: language.Translate('Errors', null)"></div>
+                <div class="custom-flex-24 custom-flex-row external-selected-order-errors-container">
+                    <div class="custom-flex-55 custom-flex-column external-selected-order-error-container" id="scrollbar-style" data-bind="foreach: Order.ErrorList">
+                        <div>
+                            <div class="custom-flex-row external-selected-order-error">
+                                <div class="custom-flex-7 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-triangle custom-fa-faint"></i></div>
+                                <div class="custom-flex-93 custom-flex-start custom-text-black external-selected-order-error-text" data-bind="text: $data"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-flex-45 custom-flex-column external-selected-order-error-container" id="scrollbar-style" data-bind="foreach: Order.LogicErrorList">
+                        <div>
+                            <div class="custom-flex-row external-selected-order-error">
+                                <div class="custom-flex-9 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-triangle custom-fa-faint"></i></div>
+                                <div class="custom-flex-91 custom-flex-start custom-text-black external-selected-order-error-text" data-bind="text: $data"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-6 custom-flex-center custom-text-black custom-text-bold custom-text-medium-large external-selected-order-header" data-bind="text: language.Translate('Corrections', null)"></div>
+                <div class="custom-flex-64 custom-flex-row">
+                    <div class="custom-flex-60 custom-flex-column">
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('StoreColon', null)"></div>
+                            <div class="custom-flex-8 custom-flex-center dropdown-menu-container">
+                                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                                </div>
+                                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-medium" id="scrollbar-style" data-bind="foreach: $root.stores">
+                                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectStore.bind($data, $data) }"><span data-bind="text: Title"></span></li>
+                                </ul>
+                            </div>
+                            <div class="custom-flex-74 custom-flex-start custom-text-black" data-bind="text: $root.storeOptions()[Order.StoreId]"></div>
+                        </div>
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressColon', null)"></div>
+                            <div class="custom-flex-42 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: ShippingAddress.AddressStreet, attr: { 'placeholder' : language.Translate('Address', null)}" type="text" autocomplete="off" tabindex="1" />
+                            </div>
+                            <div class="custom-flex-2"></div>
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressNumberColon', null)"></div>
+                            <div class="custom-flex-20 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: ShippingAddress.AddressNumber, attr: { 'placeholder' : language.Translate('Number', null)}" type="text" autocomplete="off" tabindex="2" />
+                            </div>
+                        </div>
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('FloorColon', null)"></div>
+                            <div class="custom-flex-52 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: ShippingAddress.Floor, attr: { 'placeholder' : language.Translate('Floor', null)}" type="text" autocomplete="off" tabindex="3" />
+                            </div>
+                            <div class="custom-flex-30"></div>
+                        </div>
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AreaColon', null)"></div>
+                            <div class="custom-flex-42 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: ShippingAddress.Area, attr: { 'placeholder' : language.Translate('Region', null)}" type="text" autocomplete="off" tabindex="4" />
+                            </div>
+                            <div class="custom-flex-2"></div>
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ZipCodeColon', null)"></div>
+                            <div class="custom-flex-20 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: ShippingAddress.ZipCode, attr: { 'placeholder' : language.Translate('ZipCode', null)}" type="number" autocomplete="off" tabindex="5" />
+                            </div>
+                        </div>
+                        <div class="custom-flex-19 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-70 custom-flex-column">
+                                <div class="custom-flex-50 custom-flex-row">
+                                    <div class="custom-flex-26 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LongitudeColon', null)"></div>
+                                    <div class="custom-flex-74 custom-flex-start custom-text-black">
+                                        <label class="custom-label custom-flex-start custom-text-black external-selected-order-item-label" data-bind="text: ShippingAddress.Longitude"></label>
+                                    </div>
+                                </div>
+                                <div class="custom-flex-50">
+                                    <div class="custom-flex-26 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LatitudeColon', null)"></div>
+                                    <div class="custom-flex-74 custom-flex-start custom-text-black">
+                                        <label class="custom-label custom-flex-start custom-text-black external-selected-order-item-label" data-bind="text: ShippingAddress.Latitude"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-flex-30 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold external-selected-order-item-map-button" data-bind="click: $root.CalculateAddressCoordinates, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('MapCaps', null)"></div>&nbsp;<i class="fa fa-map custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                        <!-- ko if: Order.InvoiceType == invoiceTypeEnum.Bill -->
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyNameColon', null)"></div>
+                            <div class="custom-flex-31 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: Customer.CompanyName, attr: { 'placeholder' : language.Translate('CompanyName', null)}" type="text" autocomplete="off" tabindex="6" />
+                            </div>
+                            <div class="custom-flex-2"></div>
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyPhoneColon', null)"></div>
+                            <div class="custom-flex-31 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: Customer.CompanyPhone, attr: { 'placeholder' : language.Translate('Phone', null)}" type="text" autocomplete="off" tabindex="7" />
+                            </div>
+                        </div>
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ProfessionColon', null)"></div>
+                            <div class="custom-flex-52 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: Customer.Profession, attr: { 'placeholder' : language.Translate('Profession', null)}" type="text" autocomplete="off" tabindex="8" />
+                            </div>
+                            <div class="custom-flex-30"></div>
+                        </div>
+                        <div class="custom-flex-9 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxNumberColon', null)"></div>
+                            <div class="custom-flex-31 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: Customer.TaxNumber, attr: { 'placeholder' : language.Translate('TaxNumber', null)}" type="number" autocomplete="off" tabindex="9" />
+                            </div>
+                            <div class="custom-flex-2"></div>
+                            <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxOfficeColon', null)"></div>
+                            <div class="custom-flex-31 custom-flex-start custom-text-black">
+                                <input class="custom-input external-selected-order-item-input" data-bind="value: Customer.TaxOffice, attr: { 'placeholder' : language.Translate('TaxOffice', null)}" type="text" autocomplete="off" tabindex="10" />
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Order.InvoiceType != invoiceTypeEnum.Bill -->
+                        <div class="custom-flex-27"></div>
+                        <!-- /ko -->
+                        <div class="custom-flex-3"></div>
+                        <div class="custom-flex-6 custom-flex-row external-selected-order-item">
+                            <div class="custom-flex-100 custom-flex-end custom-text-red custom-text-small" data-bind="text: language.Translate('InaccurateGeolocationMessage', null), visible: (ShippingAddress.Proximity == geocoderLocationTypeDescriptionEnum.Approximate || ShippingAddress.Proximity == geocoderLocationTypeDescriptionEnum.Unknown)"></div>
+                        </div>
+                        <div class="custom-flex-9"></div>
+                    </div>
+                    <div class="custom-flex-40 custom-flex-center">
+                        <div class="external-view-selected-order-map-container">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-25 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold custom-modal-footer-button-four" data-bind="text: language.Translate('DeleteCaps', null), click: $root.DeleteExternalOrder, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-25 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-four" data-bind="text: language.Translate('OkCaps', null), click: $root.EditExternalOrderCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-25 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-info custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-four" data-bind="text: language.Translate('PreviewCaps', null), click: $root.ViewExternalOrder, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-25 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-four" data-bind="text: language.Translate('RetryCaps', null), click: $root.EditExternalOrderConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addressesFromAddressExternalOrder" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-medium custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('AddressesCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 custom-flex-column addresses-address-external-order-container" id="scrollbar-style" data-bind="foreach: $root.addressesOptions">
+            <div>
+                <div class="custom-flex-row addresses-address-external-order-address">
+                    <div class="custom-flex-5"></div>
+                    <div class="custom-flex-75 custom-flex-start custom-text-black custom-text-small" data-bind="text: (Description != null ? Description + ' - ' : '') + (Street != null ? Street : '') + (Street != null && Number != null ? ' ' : '') + (Number != null ? Number : '') + (Street != null || Number != null ? ', ' : '') + (Area != null ? Area : '') + (Street != null || Number != null || Area != null ? ' ' : '') + (ZipCode != null ? '(' + ZipCode + ')' : '')"></div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <button class="custom-default-button custom-text-black addresses-address-external-order-address-button" data-bind="text: $root.selectedAddressesOptions() == $data ? language.Translate('Selected', null) : language.Translate('Select', null), click: $root.SelectAddressesOptionsFromAddressForExternalOrder.bind($data, $data), clickBubble: false, css:{ 'custom-default-button-success' : $root.selectedAddressesOptions() == $data, 'custom-default-button-simple' : $root.selectedAddressesOptions() != $data }" tabindex="-1"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.CallbackCalculateAddressCoordinatesConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.CallbackCalculateAddressCoordinatesCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addressesFromCoordinatesExternalOrder" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-medium custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('AddressesCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 custom-flex-column addresses-coordinates-external-order-container" id="scrollbar-style" data-bind="foreach: $root.addressesOptions">
+            <div>
+                <div class="custom-flex-row addresses-coordinates-external-order-address">
+                    <div class="custom-flex-5"></div>
+                    <div class="custom-flex-75 custom-flex-start custom-text-black custom-text-small" data-bind="text: (Description != null ? Description + ' - ' : '') + (Street != null ? Street : '') + (Street != null && Number != null ? ' ' : '') + (Number != null ? Number : '') + (Street != null || Number != null ? ', ' : '') + (Area != null ? Area : '') + (Street != null || Number != null || Area != null ? ' ' : '') + (ZipCode != null ? '(' + ZipCode + ')' : '')"></div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <button class="custom-default-button custom-text-black addresses-coordinates-external-order-address-button" data-bind="text: $root.selectedAddressesOptions() == $data ? language.Translate('Selected', null) : language.Translate('Select', null), click: $root.SelectAddressesOptionsFromCoordinatesForExternalOrder.bind($data, $data), clickBubble: false, css:{ 'custom-default-button-success' : $root.selectedAddressesOptions() == $data, 'custom-default-button-simple' : $root.selectedAddressesOptions() != $data }" tabindex="-1"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.CallbackClickMapConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.CallbackClickMapCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteExternalOrder1" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-small custom-flex-column">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('DeleteOrderCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center">
+            <div class="custom-text-black" data-bind="text: language.Translate('DeleteOrderMessageOne', null)"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.DeleteExternalOrderConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.DeleteExternalOrderCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteExternalOrder2" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-small custom-flex-column">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('DeleteOrderCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-column custom-flex-center">
+            <div class="custom-text-black" data-bind="text: language.Translate('DeleteOrderMessageTwo', null)"></div>
+            <div class="custom-text-black" data-bind="text: language.Translate('DeleteOrderMessageThree', null)"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.DeleteExternalOrderConfirmConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.DeleteExternalOrderConfirmCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewExternalOrder" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-medium custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('OrderCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 external-view-selected-order-body" data-bind="with: $root.selectedExternalOrder">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-10 custom-flex-center">
+                    <div class="custom-text-black custom-text-bold custom-text-medium-large external-view-selected-order-header" data-bind="text: language.Translate('Items', null)"></div>
+                </div>
+                <div class="custom-flex-40 custom-flex-column external-view-selected-order-details-container" id="scrollbar-style" data-bind="foreach: Order.Details">
+                    <div>
+                        <div class="external-view-selected-order-detail-container">
+                            <div class="custom-flex-row">
+                                <div class="custom-flex-64 custom-flex-start custom-text-black custom-text-small" data-bind="text: Description"></div>
+                                <div class="custom-flex-10 custom-flex-end custom-text-black" data-bind="text: Quantity"></div>
+                                <div class="custom-flex-3 custom-flex-start custom-text-black">x</div>
+                                <div class="custom-flex-10 custom-flex-start custom-text-green" data-bind="text: Price.toFixed(2)"></div>
+                                <div class="custom-flex-10 custom-flex-end custom-text-black custom-text-bold" data-bind="text: TotalWithExtras.toFixed(2)"></div>
+                                <div class="custom-flex-3 custom-flex-center custom-text-black"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                            </div>
+                            <!-- ko foreach: Extras -->
+                            <div class="custom-flex-row">
+                                <div class="custom-flex-20"></div>
+                                <div class="custom-flex-44 custom-flex-start custom-text-black custom-text-small" data-bind="text: Description"></div>
+                                <!-- ko if: Quantity > 1 -->
+                                <div class="custom-flex-10 custom-flex-end custom-text-black" data-bind="text: Quantity"></div>
+                                <div class="custom-flex-3 custom-flex-start custom-text-black">x</div>
+                                <!-- /ko -->
+                                <!-- ko if: Quantity == 1 -->
+                                <div class="custom-flex-10"></div>
+                                <div class="custom-flex-3 custom-flex-start custom-text-black">+</div>
+                                <!-- /ko -->
+                                <!-- ko if: Quantity == -1 -->
+                                <div class="custom-flex-10"></div>
+                                <div class="custom-flex-3 custom-flex-start custom-text-black">-</div>
+                                <!-- /ko -->
+                                <div class="custom-flex-10 custom-flex-start custom-text-green" data-bind="text: Price.toFixed(2)"></div>
+                                <div class="custom-flex-13"></div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: ItemRemark != null -->
+                            <div class="custom-flex-row">
+                                <div class="custom-flex-100 custom-flex-end custom-text-blue custom-text-small" data-bind="text: ItemRemark"></div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-7 custom-flex-row external-view-selected-order-discount-container">
+                    <!-- ko if: Order.Discount != 0 -->
+                    <div class="custom-flex-86 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('DiscountColon', null)"></div>
+                    <div class="custom-flex-3 custom-flex-end custom-text-red custom-text-bold" data-bind="text: '-'"></div>
+                    <div class="custom-flex-8 custom-flex-end custom-text-red custom-text-bold" data-bind="text: Order.Discount.toFixed(2)"></div>
+                    <div class="custom-flex-3 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                    <!-- /ko -->
+                </div>
+                <div class="custom-flex-10 custom-flex-center">
+                    <div class="custom-text-black custom-text-bold custom-text-medium-large external-view-selected-order-header" data-bind="text: language.Translate('Information', null)"></div>
+                </div>
+                <div class="custom-flex-33 custom-flex-column" id="scrollbar-style">
+                    <div class="custom-flex-row external-view-selected-order-info-container">
+                        <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TotalColon', null)"></div>
+                        <div class="custom-flex-57 custom-flex-end custom-text-black custom-text-bold" data-bind="text: Order.Total.toFixed(2)"></div>
+                        <div class="custom-flex-3 custom-flex-center custom-text-black custom-text-bold"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                    </div>
+                    <div class="custom-flex-row external-view-selected-order-info-container">
+                        <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('NameColon', null)"></div>
+                        <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: (Customer.FirstName != null && Customer.FirstName != '' ? Customer.FirstName : '') + (Customer.FirstName != null && Customer.FirstName != '' && Customer.LastName != null && Customer.LastName != '' ? ' ' : '') + (Customer.LastName != null && Customer.LastName != '' ? Customer.LastName : '')"></div>
+                    </div>
+                    <div class="custom-flex-row external-view-selected-order-info-container">
+                        <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PhoneColon', null)"></div>
+                        <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: Customer.Mobile != null ? Customer.Mobile : Customer.Phone1 != null ? Customer.Phone1 : Customer.Phone2 != null ? Customer.Phone2 : ''"></div>
+                    </div>
+                    <div class="custom-flex-row external-view-selected-order-info-container">
+                        <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('DateColon', null)"></div>
+                        <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: Order.OrderDate != null && Order.OrderDate != '' ? moment.utc(Order.OrderDate).format('DD-MM-YYYY HH:mm') : ''"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: $root.CloseExternalOrder, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>

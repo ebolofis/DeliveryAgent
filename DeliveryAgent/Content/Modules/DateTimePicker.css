@@ -1,0 +1,45 @@
+﻿.wdp.wdp-custom .wdp-container .wdp-header {
+    height: 40px;
+    background: #8DB6F3;
+}
+
+    .wdp.wdp-custom .wdp-container .wdp-header span {
+        color: #FFFFFF;
+    }
+
+    .wdp.wdp-custom .wdp-container .wdp-header svg {
+        fill: #337EEC;
+    }
+
+        .wdp.wdp-custom .wdp-container .wdp-header svg:hover {
+            fill: #0963E6;
+        }
+
+.wdp.wdp-custom .wdp-container .wdp-body {
+    height: 260px;
+}
+
+.wdp.wdp-custom .wdp-container .wdp-date-container ul li.wdp-active {
+    color: #FFFFFF !important;
+}
+
+    .wdp.wdp-custom .wdp-container .wdp-date-container ul li.wdp-active:before {
+        background: #8DB6F3;
+    }
+
+.wdp.wdp-custom .wdp-container .wdp-hour-container .wdp-hour-el-container input {
+    background: #8DB6F3;
+    color: #FFFFFF;
+}
+
+    .wdp.wdp-custom .wdp-container .wdp-hour-container .wdp-hour-el-container input:focus {
+        background: #0963E6;
+    }
+
+.wdp.wdp-custom .wdp-container .wdp-buttons {
+    height: 40px;
+}
+
+    .wdp.wdp-custom .wdp-container .wdp-buttons a {
+        color: #0963E6;
+    }

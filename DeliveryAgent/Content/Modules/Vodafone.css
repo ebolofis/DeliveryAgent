@@ -1,0 +1,23 @@
+﻿.vodafone-discounts-container {
+    padding: 2%;
+    overflow-y: hidden;
+}
+
+.vodafone-discounts-code-input {
+    width: 80% !important;
+    height: 75% !important;
+}
+
+.vodafone-discounts-divider {
+    border: 1px solid #597FA0;
+    opacity: 0.3;
+}
+
+.vodafone-discounts-button-container {
+    height: 45px;
+}
+
+.vodafone-discounts-button {
+    width: 80%;
+    height: 75%;
+}

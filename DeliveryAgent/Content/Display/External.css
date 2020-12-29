@@ -1,0 +1,198 @@
+﻿.custom-body {
+    height: 88vh;
+}
+
+.custom-header {
+    background-color: #DFE3E4;
+}
+
+.hit-logo {
+    background-image: url('../Images/HIT LOGOS gray.png');
+    background-repeat: no-repeat;
+    width: 86px;
+    height: 25px;
+}
+
+.custom-header-phone-text {
+    padding-left: 5%;
+}
+
+.custom-header-user-text {
+    padding-left: 5%;
+}
+
+.custom-header-notification {
+    width: 70%;
+    height: 80%;
+}
+
+.custom-header-navigation {
+    color: white;
+    cursor: pointer;
+}
+
+.external-container {
+    background-color: #F3F3F3;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.external-order-header {
+    margin: 0% 0.5%;
+    background-color: rgba(196, 196, 196, 0.45);
+    border: 1px solid #C4C4C4;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 0.3%;
+}
+
+.external-order-body {
+    overflow-y: hidden;
+}
+
+.external-order-entity {
+    height: 70px;
+    padding: 0% !important;
+}
+
+.external-order-entity-order {
+    padding: 0% 0.3%;
+}
+
+.external-order-entity-error {
+    background-color: #FBC5BC;
+    padding: 0% 2%;
+}
+
+.external-order-action {
+    width: 50%;
+    height: 70%;
+}
+
+.external-orders-multitude {
+    width: 70%;
+    height: 70%;
+}
+
+.external-buttons-container {
+    background-color: #8DB6F3;
+}
+
+.external-actions-button {
+    width: 20%;
+    height: 60%;
+}
+
+.external-selected-order-container {
+    overflow-y: hidden;
+}
+
+.external-selected-order-header {
+    margin: 0% 5%;
+    border-bottom: 1px dotted #C4C4C4;
+}
+
+.external-selected-order-errors-container {
+    overflow-y: auto;
+}
+
+.external-selected-order-error-container {
+    height: 100% !important;
+    padding: 1%;
+    background-color: #FBC5BC;
+}
+
+.external-selected-order-error {
+    margin: 0.5% 0%;
+}
+
+.external-selected-order-error-text {
+    text-align: start;
+}
+
+.external-selected-order-item {
+    padding: 0% 1%;
+}
+
+.external-selected-order-item-input {
+    width: 100%;
+    height: 80%;
+}
+
+.external-selected-order-item-label {
+    width: 100%;
+    height: 80%;
+}
+
+.external-selected-order-item-map-button {
+    width: 75%;
+    height: 50%;
+}
+
+.external-view-selected-order-body {
+    overflow: hidden;
+}
+
+.external-view-selected-order-header {
+    width: 50%;
+    padding: 1%;
+    border-bottom: 1px dotted #C4C4C4;
+}
+
+.external-view-selected-order-details-container {
+    height: 100% !important;
+    background-color: #FBE2BC;
+}
+
+.external-view-selected-order-detail-container {
+    margin: 0% 2%;
+    padding: 1%;
+    border-bottom: 1px groove #BFBFB7;
+}
+
+.external-view-selected-order-discount-container {
+    background-color: #FBE2BC;
+    padding: 0% 3%;
+}
+
+.external-view-selected-order-info-container {
+    padding: 0.5% 3%;
+}
+
+.external-view-selected-order-map-container {
+    width: 98%;
+    height: 98%;
+    background-color: #9FD0D0;
+}
+
+.addresses-address-external-order-container {
+    padding: 2%;
+}
+
+.addresses-address-external-order-address {
+    height: 37px;
+    margin: 0.4% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px 0 0 5px;
+}
+
+.addresses-address-external-order-address-button {
+    width: 90%;
+    height: 85%;
+}
+
+.addresses-coordinates-external-order-container {
+    padding: 2%;
+}
+
+.addresses-coordinates-external-order-address {
+    height: 37px;
+    margin: 0.4% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px 0 0 5px;
+}
+
+.addresses-coordinates-external-order-address-button {
+    width: 90%;
+    height: 85%;
+}

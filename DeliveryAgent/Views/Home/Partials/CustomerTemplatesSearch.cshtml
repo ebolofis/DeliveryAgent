@@ -1,0 +1,665 @@
+﻿<script type="text/html" id="customer-search-template">
+    <div class="custom-full-height custom-flex-row">
+        <div class="custom-flex-40 custom-flex-column" data-bind="with: $root.customerPagination">
+            <div class="custom-flex-10 customer-search-container">
+                <div class="custom-full-width custom-flex-row ">
+                    <div class="custom-flex-10 custom-flex-center dropdown-menu-container">
+                        <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                            <i class="fa fa-caret-down custom-fa-faint"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: $root.searchOptions">
+                            <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.searchSelection.bind($data, $data) }"><i data-bind="attr: { 'class' : ImageClass }"></i>&nbsp;<span data-bind="text: Description"></span></li>
+                        </ul>
+                    </div>
+                    <div class="custom-flex-5 custom-flex-center">
+                        <i data-bind="attr:{ 'class': $root.searchSelection().ImageClass }"></i>
+                    </div>
+                    <div class="custom-flex-65 custom-flex-center dropdown-menu-container" id="searchHistoryContainer">
+                        <input class="custom-input entity-input" id="entitySearch" data-bind="value: $root.searchSelection().Value, attr:{ 'placeholder': $root.searchSelection().Description, 'type': $root.searchSelection().InputType }" data-toggle="dropdown" autocomplete="off" tabindex="-1" autofocus />
+                        <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-long" id="searchHistory" data-bind="foreach: $root.searchHistory, visible: $root.searchSelection().Field == 'PhoneNumber' && $root.searchHistory().length > 0">
+                            <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectPhoneFromHistory.bind($data, $data) }"><span data-bind="text: $data"></span></li>
+                        </ul>
+                    </div>
+                    <div class="custom-flex-10 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white entity-clear" data-bind="click: $root.ClearSearchValues, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+                    </div>
+                    <div class="custom-flex-10 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black entity-search" data-bind="click: $root.SearchCustomer, clickBubble: false" tabindex="-1"><i class="fa fa-search custom-fa-faint"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- ko if: entityList().length > 0 -->
+            <div class="custom-flex-1"></div>
+            <div class="custom-flex-73 custom-flex-column customerList" id="scrollbar-style" data-bind="foreach: entityList">
+                <div>
+                    <div class="custom-flex-row pagination-entity-list-entity">
+                        <div class="custom-flex-70 custom-flex-column">
+                            <div class="custom-flex-34 custom-flex-start">
+                                <i class="fa fa-user custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-customer-description" data-bind="text: daCustomerModel.LastName + (daCustomerModel.FirstName != null ? ' ' + daCustomerModel.FirstName : '')"></div><!-- ko if: $root.showLoyalty() && $root.activeLoyalty() == loyaltyTypeEnum.Hit && daCustomerModel.Loyalty -->&nbsp;&nbsp;&nbsp;<i class="fa fa-gem custom-fa-faint"></i><!-- /ko -->
+                            </div>
+                            <div class="custom-flex-33 custom-flex-start">
+                                <!-- ko if: $root.addressInformation() == addressInformationEnum.None -->
+                                <i class="fa fa-map-marker custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-address-description" data-bind="text: selectedAddress != null ? selectedAddress.AddressStreet + ' ' + selectedAddress.AddressNo : ''"></div>
+                                <!-- /ko -->
+                                <!-- ko if: $root.addressInformation() == addressInformationEnum.Area -->
+                                <i class="fa fa-map-marker custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-address-description" data-bind="text: selectedAddress != null ? selectedAddress.AddressStreet + ' ' + selectedAddress.AddressNo + (selectedAddress.Area != null ?  ', ' + selectedAddress.Area : '') : ''"></div>
+                                <!-- /ko -->
+                                <!-- ko if: $root.addressInformation() == addressInformationEnum.City -->
+                                <i class="fa fa-map-marker custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-address-description" data-bind="text: selectedAddress != null ? selectedAddress.AddressStreet + ' ' + selectedAddress.AddressNo + ', ' + selectedAddress.City : ''"></div>
+                                <!-- /ko -->
+                                <!-- ko if: $root.addressInformation() == addressInformationEnum.AreaCity -->
+                                <i class="fa fa-map-marker custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-address-description" data-bind="text: selectedAddress != null ? selectedAddress.AddressStreet + ' ' + selectedAddress.AddressNo + (selectedAddress.Area != null ?  ', ' + selectedAddress.Area : '') + ', ' + selectedAddress.City : ''"></div>
+                                <!-- /ko -->
+                            </div>
+                            <!-- ko if: $root.showTelephones() -->
+                            <!-- ko if: daCustomerModel.Mobile != null -->
+                            <div class="custom-flex-33 custom-flex-start">
+                                <i class="fa fa-phone custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-phone-description" data-bind="text: daCustomerModel.Mobile"></div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: daCustomerModel.Phone1 != null -->
+                            <div class="custom-flex-33 custom-flex-start">
+                                <i class="fa fa-phone custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-phone-description" data-bind="text: daCustomerModel.Phone1"></div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: daCustomerModel.Phone2 != null -->
+                            <div class="custom-flex-33 custom-flex-start">
+                                <i class="fa fa-phone custom-fa-faint"></i>&nbsp;&nbsp;&nbsp;<div class="custom-text-black entity-phone-description" data-bind="text: daCustomerModel.Phone2"></div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <div class="custom-flex-30 custom-flex-center">
+                            <button class="custom-default-button custom-text-black entity-customer-select-button" data-bind="text: $root.selectedSearchCustomer() == $data ? language.Translate('Selected', null) : language.Translate('Select', null), click: $root.SelectCustomer.bind($data, $data), clickBubble: false, css:{ 'custom-default-button-success' : $root.selectedSearchCustomer() == $data, 'custom-default-button-simple' : $root.selectedSearchCustomer() != $data }" tabindex="-1"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-1 customer-divider"></div>
+            <div class="custom-flex-10 custom-flex-center">
+                <!-- ko if: totalPages() > 1 && !scrollable() -->
+                <ul class="pagination pagination-pagination">
+                    <li><a href="#" data-bind="click: MoveFirst, clickBubble: false">&laquo;</a></li>
+                    <li><a href="#" data-bind="click: MovePrevious, clickBubble: false">&lt;</a></li>
+                    <!-- ko if: hasLeft() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko foreach: new Array(totalPages()) -->
+                    <!-- ko if: ($index() >= $parent.activePage() && $index() <= $parent.activePage() + 2) || ($index() <= $parent.activePage() && $index() >= $parent.activePage() - 2) -->
+                    <li data-bind="css: { active: ($index()) == $parent.activePage() }"><a href="#" data-bind="text: $index() + 1, click: $parent.MoveSpecific.bind($data, $index()), clickBubble: false"></a></li>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: hasRight() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <li><a href="#" data-bind="click: MoveNext, clickBubble: false">&gt;</a></li>
+                    <li><a href="#" data-bind="click: MoveLast, clickBubble: false">&raquo;</a></li>
+                </ul>
+                <!-- /ko -->
+            </div>
+            <div class="custom-flex-5 custom-flex-end custom-text-black">
+                <div>*</div>&nbsp;<div class="custom-text-bold custom-text-large" data-bind="text: totalResults()"></div>&nbsp;<div data-bind="text: language.Translate('Found', null)"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: entityList().length == 0 -->
+            <div class="custom-flex-90">
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="custom-flex-60">
+            <!-- ko if: $root.searchingCustomer()-->
+            <div class="custom-flex-center custom-full-width custom-full-height customLoading">
+                <i class="fa fa-circle-notch fa-spin fa-5x custom-fa-faint"></i>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$root.searchingCustomer()-->
+            <div class="custom-full-width custom-flex-column customer-options-customer" data-bind="with: $root.selectedSearchCustomer">
+                <div class="custom-flex-8">
+                    <ul class="custom-full-width custom-flex-row customer-options-container" data-bind="foreach: $root.customerOptions">
+                        <!-- ko if: $root.showMessages() || (!$root.showMessages() && Field != 'Message' && Field != 'Messages')-->
+                        <li class="custom-flex-100 custom-flex-center custom-text-black custom-text-bold custom-text-large customer-options-tab" data-bind="text: Description, click: $root.SelectTab.bind($data, $data), clickBubble: false, css: { 'customer-options-tab-selected' : $root.customerTab() == $data }"></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+                <div class="custom-flex-92 customer-options-customer-templates">
+                    <!-- ko if: $root.customerTab().Field == 'Order'-->
+                    <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-tab-order-template' }"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $root.customerTab().Field == 'Message'-->
+                    <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-tab-message-template' }"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $root.customerTab().Field == 'Details'-->
+                    <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-tab-details-template' }"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $root.customerTab().Field == 'Orders'-->
+                    <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-tab-orders-template' }"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $root.customerTab().Field == 'Messages'-->
+                    <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-tab-messages-template' }"></div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-tab-order-template">
+    <div class="custom-full-height custom-flex-column">
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('NameColon', null)"></div>
+            <div class="custom-flex-37 custom-flex-start custom-text-black custom-text-small" data-bind="text: (daCustomerModel.FirstName != null ? daCustomerModel.FirstName : '') + ' ' + daCustomerModel.LastName"></div>
+            <!-- ko if: $root.showEditCustomer() -->
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold customer-edit-button" data-bind="click: $root.EditCustomer, clickBubble: false" tabindex="-1"><i class="fa fa-user-edit custom-fa-faint"></i></button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$root.showEditCustomer() -->
+            <div class="custom-flex-7"></div>
+            <!-- /ko -->
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PhoneColon', null)"></div>
+            <!-- ko if: $root.hasCommunicationPhone() -->
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectCommunicationPhone.bind($data, daCustomerModel.Phone1) }, visible: daCustomerModel.Phone1 != null"><span data-bind="text: daCustomerModel.Phone1"></span></li>
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectCommunicationPhone.bind($data, daCustomerModel.Mobile) }, visible: daCustomerModel.Mobile != null"><span data-bind="text: daCustomerModel.Mobile"></span></li>
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectCommunicationPhone.bind($data, daCustomerModel.Phone2) }, visible: daCustomerModel.Phone2 != null"><span data-bind="text: daCustomerModel.Phone2"></span></li>
+                </ul>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$root.hasCommunicationPhone() -->
+            <div class="custom-flex-7"></div>
+            <!-- /ko -->
+            <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: selectedCommunicationPhone"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <!-- ko if: $root.activeLoyalty() == loyaltyTypeEnum.Hit -->
+            <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PointsColon', null)"></div>
+            <!-- ko if: daCustomerModel.Loyalty -->
+            <div class="custom-flex-11 custom-flex-start custom-text-black" data-bind='text: daCustomerModel.LoyaltyPoints,click: $root.ShowLoyaltyPointsHistory'></div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-points-button" data-bind="click: $root.AdministratorAuthorization, clickBubble: false" tabindex="-1"><i class="fa fa-gem custom-fa-faint"></i></button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !daCustomerModel.Loyalty -->
+            <div class="custom-flex-18"></div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: $root.activeLoyalty() == loyaltyTypeEnum.Goodys -->
+            <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysLoyaltyGiftCardsColon', null)"></div>
+            <!-- ko if: $root.loyaltyGoodys.isLoyalty() -->
+            <div class="custom-flex-11 custom-flex-start custom-text-black" data-bind="text: $root.loyaltyGoodys.giftCards()"></div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-points-button" data-bind="click: $root.loyaltyGoodys.ShowLoyaltyInformation, clickBubble: false" tabindex="-1"><i class="fa fa-gifts custom-fa-faint"></i></button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$root.loyaltyGoodys.isLoyalty() -->
+            <div class="custom-flex-18"></div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <div class="custom-flex-2"></div>
+            <!-- ko if: $root.hasLoyaltyCode() -->
+            <div class="custom-flex-23 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LoyaltyCodeColon', null)"></div>
+            <div class="custom-flex-45 custom-flex-center custom-text-black">
+                <input class="custom-input loyalty-code-input" data-bind="value: $root.customerLoyaltyCode, attr: { 'placeholder' : language.Translate('LoyaltyCode', null)}" type="text" autocomplete="off" tabindex="-1" />
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !$root.hasLoyaltyCode() -->
+            <div class="custom-flex-68"></div>
+            <!-- /ko -->
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ShippingAddressColon', null)"></div>
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: daAddrModel">
+                    <li class="dropdown-menu-list-item" ><span data-bind="text: AddressStreet + ' ' + AddressNo"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-46 custom-flex-start custom-text-black custom-text-small" data-bind="text: selectedAddress != null ? selectedAddress.AddressStreet + ' ' + selectedAddress.AddressNo + (selectedAddress.Area != null ?  ', ' + selectedAddress.Area : '') + ', ' + selectedAddress.City : ''"></div>
+            <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('FloorColon', null)"></div>
+            <div class="custom-flex-8 custom-flex-start custom-text-black" data-bind="text: selectedAddress != null ? selectedAddress.Floor : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressNoteColon', null)"></div>
+            <div class="custom-flex-73 custom-flex-start custom-text-black" data-bind="text: selectedAddress != null ? selectedAddress.Notes : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('StoreColon', null)"></div>
+            <!-- ko if: ($root.customerSale().Type == saleTypeEnum.Takeout) || ($root.customerSale().Type == saleTypeEnum.Delivery && $root.selectDeliveryStore) -->
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: $root.stores">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectStore.bind($data, $data) }, visible: StoreStatus != storeStatusEnum.Closed && StoreStatus != storeStatusEnum.Delivery"><span data-bind="text: Title"></span></li>
+                </ul>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $root.customerSale().Type == saleTypeEnum.Delivery && !$root.selectDeliveryStore -->
+            <div class="custom-flex-7"></div>
+            <!-- /ko -->
+            <div class="custom-flex-66 custom-flex-start custom-text-black" data-bind="text: $root.customerStore() != null ? $root.customerStore().Title : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('StatusColon', null)"></div>
+            <div class="custom-flex-41 custom-flex-start custom-text-black" data-bind="text: $root.customerStore() != null ? $root.storeStatusOptions()[$root.customerStore().StoreStatus] : ''"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('DeliveryColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-start custom-text-black" data-bind="text: $root.customerStore() != null ? $root.customerStore().DeliveryTime + '\'' : ''"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TakeOutColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-start custom-text-black" data-bind="text: $root.customerStore() != null ? $root.customerStore().TakeOutTime + '\'' : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('StoreNoteColon', null)"></div>
+            <div class="custom-flex-73 custom-flex-start custom-text-black" data-bind="text: $root.customerStore() != null ? $root.customerStore().Notes : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CustomerNoteColon', null)"></div>
+            <div class="custom-flex-73 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Notes"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SecretNoteColon', null)"></div>
+            <div class="custom-flex-73 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.SecretNotes"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LastOrderNoteColon', null)"></div>
+            <div class="custom-flex-60 custom-flex-start custom-text-red" data-bind="text: daCustomerModel.LastOrderNote"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-23 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AccountTypeColon', null)"></div>
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: $root.paymentOptions">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectPayment.bind($data, $data) }, visible: !(Type == accountTypeEnum.CreditCard && $root.customerStore() != null && !$root.customerStore().HasCreditCard)"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-19 custom-flex-start custom-text-black" data-bind="text: $root.customerPayment() != null ? $root.customerPayment().Description : ''"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-23 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SaleTypeColon', null)"></div>
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: $root.saleOptions">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectSaleType.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-19 custom-flex-start custom-text-black" data-bind="text: $root.customerSale() != null ? $root.customerSale().Description : ''"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('InvoiceTypeColon', null)"></div>
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: $root.invoiceOptions">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectInvoice.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-66 custom-flex-start custom-text-black" data-bind="text: $root.customerInvoice() != null ? $root.customerInvoice().Description : ''"></div>
+        </div>
+        <!-- ko if: $root.customerInvoice().Type == 7 -->
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyNameColon', null)"></div>
+            <div class="custom-flex-48 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.JobName"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyPhoneColon', null)"></div>
+            <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.PhoneComp"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxNumberColon', null)"></div>
+            <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.VatNo"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxOfficeColon', null)"></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Doy"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ProfessionColon', null)"></div>
+            <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Proffesion"></div>
+        </div>
+        <div class="custom-flex-6 custom-flex-row customer-orders-detail">
+            <div class="custom-flex-27 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('BillingAddressColon', null)"></div>
+            <div class="custom-flex-7 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-extra-small" id="scrollbar-style" data-bind="foreach: daAddrModel">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectBillingAddress.bind($data, $data) }, visible: AddressType == 1"><span data-bind="text: AddressStreet + ' ' + AddressNo"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-66 custom-flex-start custom-text-black custom-text-small" data-bind="text: selectedBillingAddress != null ? selectedBillingAddress.AddressStreet + ' ' + selectedBillingAddress.AddressNo + (selectedBillingAddress.Area != null ?  ', ' + selectedBillingAddress.Area : '') + ', ' + selectedAddress.City : ''"></div>
+        </div>
+        <!-- /ko -->
+        <div class="custom-flex-28 custom-flex-center">
+            <!-- ko if: !shownMap -->
+            <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold address-map-button" data-bind="click: $root.ShowMap, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('MapCaps', null)"></div>&nbsp;<i class="fa fa-map custom-fa-faint"></i></button>
+            <!-- /ko -->
+            <!-- ko if: shownMap -->
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-tab-message-template">
+    <div class="custom-full-height custom-flex-column" data-bind="with: $root.generalMessages">
+        <div class="custom-flex-10 custom-flex-row customer-message-selection">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('RequestReasonColon', null)"></div>
+            <div class="custom-flex-70 custom-flex-center customer-message-selection-container">
+                <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium customer-message-selection-button" tabindex="-1" data-toggle="dropdown">
+                    <div class="custom-flex-90 custom-flex-start" data-bind="text: SelectedMainMessage() != null ? SelectedMainMessage().Description : ''"></div>
+                    <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: MainMessages">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectMainMessage.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row customer-message-selection" data-bind="with: SelectedMainMessage">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('RequestCategoryColon', null)"></div>
+            <div class="custom-flex-70 custom-flex-center customer-message-selection-container">
+                <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium customer-message-selection-button" tabindex="-1" data-toggle="dropdown">
+                    <div class="custom-flex-90 custom-flex-start" data-bind="text: $parent.SelectedMessage() != null ? $parent.SelectedMessage().Description : ''"></div>
+                    <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: Messages">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectMessage.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row customer-message-selection" data-bind="with: SelectedMessage">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('RequestSubcategoryColon', null)"></div>
+            <div class="custom-flex-70 custom-flex-center customer-message-selection-container">
+                <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium customer-message-selection-button" tabindex="-1" data-toggle="dropdown">
+                    <div class="custom-flex-90 custom-flex-start" data-bind="text: $parent.SelectedMessageDetail() != null ? $parent.SelectedMessageDetail().Description : ''"></div>
+                    <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: MessageDetails">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectMessageDetail.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="custom-flex-20 custom-flex-row customer-message-selection">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('RequestMessageColon', null)"></div>
+            <div class="custom-flex-70 custom-flex-center">
+                <textarea class="custom-input custom-text-black customer-message-message-description-input" id="scrollbar-style" data-bind="value: MessageDescription, attr: { 'placeholder' : language.Translate('RequestMessage', null)}" type="text" autocomplete="off" tabindex="-1"></textarea>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row customer-message-selection">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('OrderColon', null)"></div>
+            <div class="custom-flex-60 custom-flex-center dropup customer-message-selection-container">
+                <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium customer-message-selection-button" tabindex="-1" data-toggle="dropdown">
+                    <div class="custom-flex-90 custom-flex-start"><span data-bind="text: SelectedOrder() != null ? moment.utc(SelectedOrder().OrderDate).format('DD-MM-YYYY HH:mm') + ' - ' + SelectedOrder().Total.toFixed(2) : ''"></span>&nbsp;<i class="fa fa-euro-sign custom-fa-faint" data-bind="visible: SelectedOrder() != null"></i></div>
+                    <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: $root.customerOrders">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectCustomerMessageOrder.bind($data, $data) }"><span data-bind="text: moment.utc(OrderDate).format('DD-MM-YYYY HH:mm') + ' - ' + Total.toFixed(2)"></span>&nbsp;<i class="fa fa-euro-sign custom-fa-faint"></i></li>
+                </ul>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white customer-message-cancel-selection-button" data-bind="click: $root.ClearCustomerMessageOrder, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+            </div>
+        </div>
+        <div class="custom-flex-20 custom-flex-row customer-message-selection">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('RequestCustomerNoteColon', null)"></div>
+            <div class="custom-flex-70 custom-flex-center">
+                <textarea class="custom-input custom-text-black customer-message-customer-description-input" id="scrollbar-style" data-bind="value: CustomerDescription, attr: { 'placeholder' : language.Translate('RequestCustomerNote', null)}" type="text" autocomplete="off" tabindex="-1"></textarea>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row customer-message-selection">
+            <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('StoreColon', null)"></div>
+            <div class="custom-flex-60 custom-flex-center dropup customer-message-selection-container">
+                <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium customer-message-selection-button" tabindex="-1" data-toggle="dropdown">
+                    <div class="custom-flex-90 custom-flex-start"><span data-bind="text: SelectedStore() != null ? $root.storeOptions()[SelectedStore().Id] : ''"></span></div>
+                    <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: $root.stores">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectCustomerMessageStore.bind($data, $data) }"><span data-bind="text: Title"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white customer-message-cancel-selection-button" data-bind="click: $root.ClearCustomerMessageStore, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row">
+            <div class="custom-flex-50 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold customer-message-options-button" data-bind="click: $root.SubmitTemporaryCustomerMessage, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('TemporarySubmitCaps', null)"></div>&nbsp;<i class="fa fa-caret-up custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-50 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold customer-message-options-button" data-bind="click: $root.SubmitPermanentCustomerMessage, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('SubmitCaps', null)"></div>&nbsp;<i class="fa fa-caret-square-up custom-fa-faint"></i></button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-tab-details-template">
+    <div class="custom-full-height custom-flex-column">
+        <div class="custom-flex-90 custom-flex-column" id="scrollbar-style">
+            <div>
+                <div class="custom-flex-7 custom-flex-row customer-details-header">
+                    <div class="custom-flex-100 custom-flex-start custom-text-black custom-text-bold custom-text-medium-large" data-bind="text: language.Translate('PersonalInformation', null)"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('NameColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: (daCustomerModel.FirstName != null ? daCustomerModel.FirstName : '') + ' ' + daCustomerModel.LastName"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('EMailColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Email"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('MobileColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Mobile"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('StaticColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: (daCustomerModel.Phone1 != null ? daCustomerModel.Phone1 : '') + (daCustomerModel.Phone1 != null && daCustomerModel.Phone2 != null ? ' - ' : '') + (daCustomerModel.Phone2 != null ? daCustomerModel.Phone2 : '')"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SendSMSColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.SendSms ? language.Translate('Yes', null) : language.Translate('No', null)"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SendEMailColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.SendEmail ? language.Translate('Yes', null) : language.Translate('No', null)"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyNameColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.JobName"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PhoneColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.PhoneComp"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ProfessionColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Proffesion"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxNumberColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.VatNo"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxOfficeColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Doy"></div>
+                </div>
+                <div class="custom-flex-7 custom-flex-row customer-details-header">
+                    <div class="custom-flex-100 custom-flex-start custom-text-black custom-text-bold custom-text-medium-large" data-bind="text: language.Translate('Addresses', null)"></div>
+                </div>
+                <!-- ko foreach: daAddrModel -->
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-13 custom-flex-center custom-text-black" data-bind="text: $root.customerAddressTypeOptions()[AddressType]"></div>
+                    <div class="custom-flex-2 custom-flex-center custom-text-black" data-bind="text: '-'"></div>
+                    <div class="custom-flex-65 custom-flex-start custom-text-black" data-bind="text: AddressStreet + ' ' + AddressNo + (Area != null && Zipcode != null ? ' - ' : '') + (Area != null ? Area : '') + (Zipcode != null ? ', ' + Zipcode : '')"></div>
+                    <div class="custom-flex-2 custom-flex-center custom-text-black" data-bind="text: '-'"></div>
+                    <div class="custom-flex-18 custom-flex-center custom-text-black" data-bind="text: FriendlyName"></div>
+                </div>
+                <!-- /ko -->
+                <div class="custom-flex-7 custom-flex-row customer-details-header">
+                    <div class="custom-flex-100 custom-flex-start custom-text-black custom-text-bold custom-text-medium-large" data-bind="text: language.Translate('Comments', null)"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CustomerNoteColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.Notes"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SecretNoteColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.SecretNotes"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-row customer-details-detail">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LastOrderNoteColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: daCustomerModel.LastOrderNote"></div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row">
+            <div class="custom-flex-25 custom-flex-center"></div>
+            <div class="custom-flex-50 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold customer-details-options-button" data-bind="click: $root.EditCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('EditCaps', null)"></div>&nbsp;<i class="fa fa-user-edit custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-25 custom-flex-center"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-tab-orders-template">
+    <div class="custom-full-height custom-flex-column">
+        <div class="custom-flex-10">
+            <div class="custom-full-width custom-flex-row customer-orders-header">
+                <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Store', null)"></div>
+                <div class="custom-flex-6 custom-flex-center custom-text-black custom-text-bold custom-text-small">#</div>
+                <div class="custom-flex-14 custom-flex-start custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('OrderStatus', null)"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Start', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Delay', null)"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Finish', null)"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Points', null)"></div>
+                <div class="custom-flex-10 custom-flex-end custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Total', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Actions', null)"></div>
+            </div>
+        </div>
+        <div class="custom-flex-80 custom-flex-column" id="scrollbar-style" data-bind="foreach: $root.customerOrders">
+            <div>
+                <div class="custom-flex-row customer-orders-order">
+                    <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold custom-text-small" data-bind="text: $root.storeOptions()[StoreId]"></div>
+                    <div class="custom-flex-6 custom-flex-center custom-text-black custom-text-small" data-bind="text: StoreOrderNo != null ? StoreOrderNo : ''"></div>
+                    <div class="custom-flex-14 custom-flex-start custom-text-green custom-text-extra-small" data-bind="text: $root.orderStatusOptions()[Status]"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-extra-small" data-bind="text: moment.utc(OrderDate).format('DD-MM-YYYY HH:mm')"></div>
+                    <div class="custom-flex-14 custom-flex-center custom-text-red custom-text-small" data-bind="text: FinishDate == null ? OrderType == saleTypeEnum.Delivery ? moment.duration(moment().diff(moment(EstBillingDate))).asMinutes() >= 1 ? moment.duration(moment().diff(moment(EstBillingDate))).asMinutes().toFixed(0) + '\'' : '' : moment.duration(moment().diff(moment(EstTakeoutDate))).asMinutes() >= 1 ? moment.duration(moment().diff(moment(EstTakeoutDate))).asMinutes().toFixed(0) + '\'' : '' : ''"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-extra-small" data-bind="text: FinishDate != null ? moment.utc(FinishDate).format('DD-MM-YYYY HH:mm') : ''"></div>
+                    <div class="custom-flex-5 custom-flex-center custom-text-green custom-text-small" data-bind="text: '+' + (PointsGain != null ? PointsGain : 0)"></div>
+                    <div class="custom-flex-5 custom-flex-center custom-text-red custom-text-small" data-bind="text: '-' + (PointsRedeem != null ? PointsRedeem : 0)"></div>
+                    <div class="custom-flex-7 custom-flex-end custom-text-black custom-text-small" data-bind="text: Total.toFixed(2)"></div>
+                    <div class="custom-flex-3 custom-flex-center custom-text-black custom-text-small"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                    <!-- ko if: Remarks == null || Remarks == '' -->
+                    <div class="custom-flex-7 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-text-green customer-order-button" data-bind="click: $root.AddComplaint.bind($data, Id), clickBubble: false" tabindex="-1"><i class="fa fa-smile custom-fa-faint"></i></button>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: Remarks != null && Remarks != '' -->
+                    <div class="custom-flex-7 custom-flex-center custom-tooltip">
+                        <button class="custom-default-button custom-default-button-simple custom-text-red customer-order-button" data-bind="click: $root.EditComplaint.bind($data, Id, Remarks), clickBubble: false" tabindex="-1"><i class="fa fa-frown custom-fa-faint"></i></button>
+                        <span class="custom-tooltiptext" data-bind="text: Remarks"></span>
+                    </div>
+                    <!-- /ko -->
+                    <div class="custom-flex-7 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-info customer-order-button" data-bind="click: $root.ViewOrder.bind($data, $data), clickBubble: false" tabindex="-1"><i class="fa fa-info custom-fa-faint"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-row">
+            <div class="custom-flex-70"></div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 5), clickBubble: false, css: { 'custom-default-button-info' : $root.customerOrdersMultitude() == 5 }" tabindex="-1"><div>5</div></button>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 10), clickBubble: false, css: { 'custom-default-button-info' : $root.customerOrdersMultitude() == 10 }" tabindex="-1"><div>10</div></button>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 20), clickBubble: false, css: { 'custom-default-button-info' : $root.customerOrdersMultitude() == 20 }" tabindex="-1"><div>20</div></button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-tab-messages-template">
+    <div class="custom-full-height custom-flex-column" data-bind="with: $root.customerMessagesPagination">
+        <div class="custom-flex-10">
+            <div class="custom-full-width custom-flex-row customer-messages-header">
+                <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Store', null)"></div>
+                <div class="custom-flex-11 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Staff', null)"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Creation', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('RequestReason', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('RequestCategory', null)"></div>
+                <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('RequestSubcategory', null)"></div>
+                <div class="custom-flex-18 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('RequestMessage', null)"></div>
+                <div class="custom-flex-7 custom-flex-center custom-text-black custom-text-bold custom-text-small" data-bind="text: language.Translate('Actions', null)"></div>
+            </div>
+        </div>
+        <!-- ko if: entityList().length > 0 -->
+        <div class="custom-flex-75 custom-flex-column" id="scrollbar-style" data-bind="foreach: entityList">
+            <div>
+                <div class="custom-flex-row pagination-entity-list-entity">
+                    <div class="custom-flex-12 custom-flex-start custom-text-black custom-text-extra-small" data-bind="text: (StoreId != null ? $root.storeOptions()[StoreId] : '')"></div>
+                    <div class="custom-flex-11 custom-flex-center custom-text-black custom-text-extra-small" data-bind="text: (StaffFirstName != null ? StaffFirstName : '') + (StaffFirstName != null && StaffLastName != null ? ' ' : '') + (StaffLastName != null ? StaffLastName : '')"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-extra-small" data-bind="text: moment.utc(CreationDate).format('DD-MM-YYYY HH:mm')"></div>
+                    <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-small" data-bind="text: (MainMessage != null ? MainMessage : '')"></div>
+                    <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-small" data-bind="text: (Message != null ? Message : '')"></div>
+                    <div class="custom-flex-14 custom-flex-center custom-text-black custom-text-small" data-bind="text: (MessageDetail != null ? MessageDetail : '')"></div>
+                    <div class="custom-flex-18 custom-flex-start custom-text-blue custom-text-small" data-bind="text: (Description != null ? Description : '')"></div>
+                    <div class="custom-flex-7 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-success customer-messages-button" data-bind="click: $root.EditCustomerMessage.bind($data, $data), clickBubble: false, visible: IsTemporary" tabindex="-1"><i class="fa fa-edit custom-fa-faint"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <!-- ko if: totalPages() > 1 && !scrollable() -->
+            <ul class="pagination pagination-pagination">
+                <li><a href="#" data-bind="click: MoveFirst, clickBubble: false">&laquo;</a></li>
+                <li><a href="#" data-bind="click: MovePrevious, clickBubble: false">&lt;</a></li>
+                <!-- ko if: hasLeft() -->
+                <li>
+                    <a href="#"><span>...</span></a>
+                </li>
+                <!-- /ko -->
+                <!-- ko foreach: new Array(totalPages()) -->
+                <!-- ko if: ($index() >= $parent.activePage() && $index() <= $parent.activePage() + 2) || ($index() <= $parent.activePage() && $index() >= $parent.activePage() - 2) -->
+                <li data-bind="css: { active: ($index()) == $parent.activePage() }"><a href="#" data-bind="text: $index() + 1, click: $parent.MoveSpecific.bind($data, $index()), clickBubble: false"></a></li>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: hasRight() -->
+                <li>
+                    <a href="#"><span>...</span></a>
+                </li>
+                <!-- /ko -->
+                <li><a href="#" data-bind="click: MoveNext, clickBubble: false">&gt;</a></li>
+                <li><a href="#" data-bind="click: MoveLast, clickBubble: false">&raquo;</a></li>
+            </ul>
+            <!-- /ko -->
+        </div>
+        <div class="custom-flex-5 custom-flex-end custom-text-black">
+            <div>*</div>&nbsp;<div class="custom-text-bold custom-text-large" data-bind="text: totalResults()"></div>&nbsp;<div data-bind="text: language.Translate('Found', null)"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: entityList().length == 0 -->
+        <div class="custom-flex-90">
+        </div>
+        <!-- /ko -->
+    </div>
+</script>

@@ -1,0 +1,63 @@
+﻿<div id="failedOrders" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-large custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('FailedOrdersCaps', null)"></div>
+        </div>
+        <div class="custom-flex-76 custom-flex-column failed-orders-container">
+            <div class="custom-flex-7">
+                <div class="custom-full-width custom-flex-row failed-orders-header">
+                    <div class="custom-flex-15 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('Id', null)"></div>
+                    <div class="custom-flex-20 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('Agent', null)"></div>
+                    <div class="custom-flex-20 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('Origin', null)"></div>
+                    <div class="custom-flex-55 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('Error', null)"></div>
+                </div>
+            </div>
+            <div class="custom-flex-93 custom-flex-column" id="scrollbar-style" data-bind="foreach: $root.failedOrders">
+                <div>
+                    <div class="custom-flex-row failed-orders-order" data-bind="css: { 'failed-orders-order-associated' : (Origin != orderOriginEnum.Agent || (Origin == orderOriginEnum.Agent && AgentId == $root.selectedPhone())) , 'failed-orders-order-not-associated' : (Origin == orderOriginEnum.Agent && AgentId != $root.selectedPhone()) }">
+                        <div class="custom-flex-15 custom-flex-center custom-text-black" data-bind="text: Id"></div>
+                        <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: AgentId"></div>
+                        <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: $root.orderOriginOptions()[Origin]"></div>
+                        <div class="custom-flex-55 custom-flex-start custom-text-black" data-bind="text: Error.length > 30 ? Error.substring(0, 30) + ' ...' : Error"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-12 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: $root.CloseFailedOrders, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="generalActions" class="custom-modal general-actions-modal">
+    <div class="custom-modal-extra-small-empty general-actions-container">
+        <div class="custom-flex-end general-actions-header">
+            <div class="custom-flex-center general-actions-header-close-button" data-bind="click: $root.CloseGeneralActions, clickBubble: false"><i class="fa fa-times fa-2x custom-fa-faint"></i></div>
+        </div>
+        <div class="custom-flex-column general-actions-body">
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-info custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.GoToModule.bind($data, navigationViewsEnum.Customer, null), clickBubble: false" tabindex="-1"><i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('SearchCustomerCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-info custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.GoToModule.bind($data, navigationViewsEnum.OrdersSupervisor, null), clickBubble: false" tabindex="-1"><i class="fa fa-user-shield"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('OrdersSupervisorCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container" data-bind="visible: $root.showMessages()">
+                <button class="custom-default-button custom-default-button-info custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.GoToModule.bind($data, navigationViewsEnum.MessagesSupervisor, null), clickBubble: false" tabindex="-1"><i class="fa fa-user-tag"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('MessagesSupervisorCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-info custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.GoToModule.bind($data, navigationViewsEnum.External, null), clickBubble: false" tabindex="-1"><i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('ExternalDeliveryAPIsCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-simple custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.ToggleFullscreen, clickBubble: false" tabindex="-1"><i class="fa fa-expand-arrows-alt"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('FullScreenCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-simple custom-text-black custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.navigation.RefreshPage, clickBubble: false" tabindex="-1"><i class="fa fa-sync"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('RefreshPageCaps', null)"></div></button>
+            </div>
+            <div class="custom-flex-center general-action-button-container">
+                <button class="custom-default-button custom-default-button-error custom-text-white custom-text-bold custom-flex-start general-action-button" data-bind="click: $root.LogOff, clickBubble: false" tabindex="-1"><i class="fa fa-sign-out-alt"></i>&nbsp;&nbsp;&nbsp;<div data-bind="text: language.Translate('DisconnectUserCaps', null)"></div></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en" manifest="">
+<!-- ~/pos.manifest -->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title </title>
+    <link href="~/hit.ico" rel="shortcut icon" type="image/x-icon" />
+    <!-- Basic includes -->
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <!-- Plugin includes -->
+    <link href="~/Plugins/Font-Awesome/all.css" rel="stylesheet" />
+    <link href="~/Plugins/Keyboard/keyboard.css" rel="stylesheet" />
+    <link href="~/Plugins/Toastr/toastr.css" rel="stylesheet" />
+    <link href="~/Plugins/Window-Date-Picker/window-date-picker.css" rel="stylesheet" />
+    <!-- General includes -->
+    <link href="~/Content/General/Flex.css" rel="stylesheet" />
+    <link href="~/Content/General/Fonts.css" rel="stylesheet" />
+    <link href="~/Content/General/General.css" rel="stylesheet" />
+    <link href="~/Content/General/Miscellaneous.css" rel="stylesheet" />
+    <!-- Modules includes -->
+    <link href="~/Content/Modules/Language.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+    <style>
+        .custom-header-main {
+            height: 4vh;
+        }
+
+        .custom-body-main {
+            background-color: #DFE3E4;
+            background-image: url('../../Content/Images/16-Back to Alaska.png');
+            user-select: text;
+        }
+
+        .custom-footer-main {
+            height: 8vh;
+        }
+    </style>
+</head>
+<body class="custom-body-main">
+    <header class="custom-header-main">
+        @RenderSection("header", required: false)
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+    <footer class="custom-footer-main">
+        @RenderSection("footer", required: false)
+    </footer>
+    <!-- Basic includes -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/knockout-3.4.2.js"></script>
+    <script src="~/Scripts/i18next-1.8.0.min.js"></script>
+    <!-- Plugin includes -->
+    <script src="~/Plugins/Keyboard/jquery.keyboard.js"></script>
+    <script src="~/Plugins/Moment/moment.js"></script>
+    <script src="~/Plugins/Toastr/toastr.js"></script>
+    <script src="~/Plugins/Window-Date-Picker/window-date-picker.js"></script>
+    <!-- Helper includes -->
+    <script src="~/Scripts/Helpers/DoubleClickHelper.js"></script>
+    <script src="~/Scripts/Helpers/ArrayHelper.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/General.js"></script>
+    <script src="~/Scripts/Enumerators/Language.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/language-module.js"></script>
+    @RenderSection("scripts", required: true)
+    <script type="text/javascript">
+        document.body.oncontextmenu = function () {
+            return true;
+        };
+        var ApiAddress = '@(System.Configuration.ConfigurationManager.AppSettings["PosWebApi"])' != '' ? '@(System.Configuration.ConfigurationManager.AppSettings["PosWebApi"])' : null;
+        localStorage.ApiAddress = ApiAddress;
+        var ClientVersion = '@typeof(DeliveryAgent.MvcApplication).Assembly.GetName().Version';
+        localStorage.ClientVersion = ClientVersion;
+        var dbVersion = 6;
+        localStorage.DBVersion = dbVersion;
+        var db = null;
+        var dbName = "CallCenter";
+        var language = new CustomLanguage();
+        language.InitializeTranslation();
+    </script>
+</body>
+
+</html>

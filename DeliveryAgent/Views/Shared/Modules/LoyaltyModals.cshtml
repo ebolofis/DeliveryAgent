@@ -1,0 +1,210 @@
+﻿<div id="showLoyaltyPoints" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-large custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('LoyaltyCustomerHistoryPointsCaps', null)"></div>
+        </div>
+        <div class="custom-flex-76 custom-flex-column loyalty-product-options-body">
+            <div class="custom-flex-10 custom-flex-row">
+                <div class="custom-flex-row custom-flex-20 custom-flex-center"> <label> Points</label>  </div>
+                <div class="custom-flex-row custom-flex-20 custom-flex-center">  <label> Date</label> </div>
+                <div class="custom-flex-row custom-flex-20 custom-flex-center"><label> Store</label></div>
+                <div class="custom-flex-row custom-flex-20 custom-flex-center"><label> Staff</label></div>
+                <div class="custom-flex-row custom-flex-20 custom-flex-center"><label> Description</label></div>
+            </div>
+            <div class="custom-flex-90 custom-flex-column"  id="scrollbar-style" data-bind="foreach: selectedSearchCustomerLoyaltyHist">
+                <div class="custom-flex-10 custom-flex-row">
+                    <div class="custom-flex-row custom-flex-20 custom-flex-center"> <label data-bind="text:Points"> </label>  </div>
+                    <div class="custom-flex-row custom-flex-20 custom-flex-center">  <label data-bind="text:  moment.utc(Date).format('DD-MM-YYYY')   "> </label> </div>
+                    <div class="custom-flex-row custom-flex-20 custom-flex-center"> <label data-bind="text:$root.storeOptions()[StoreId]"> </label></div>
+                    <div class="custom-flex-row custom-flex-20 custom-flex-center"><label data-bind="text:StaffId"> </label></div>
+                    <div class="custom-flex-row custom-flex-20 custom-flex-center"><label data-bind="text:Description "> </label></div>
+                </div>                                                                        
+            </div>
+
+        </div>
+        <div class="custom-flex-12 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: $root.closeLoyaltyPoints, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addLoyaltyAdministratorAuthorization" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('AdministratorAuthorizationCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-50 custom-flex-row loyalty-administrator-modal-authorization">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('UsernameColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-center">
+                        <input class="custom-input loyalty-administrator-modal-authorization-input" data-bind="value: $root.staffAdministratorUsername, attr: { 'placeholder' : language.Translate('Username', null)}" type="text" autocomplete="off" tabindex="1" />
+                    </div>
+                </div>
+                <div class="custom-flex-50 custom-flex-row loyalty-administrator-modal-authorization">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PasswordColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-center">
+                        <input class="custom-input loyalty-administrator-modal-authorization-input" data-bind="value: $root.staffAdministratorPassword, attr: { 'placeholder' : language.Translate('Password', null)}" type="password" autocomplete="off" tabindex="2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.AddLoyaltyAdministratorAuthorizationConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.AddLoyaltyAdministratorAuthorizationCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addLoyaltyPoints" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('AddLoyaltyPoints', null)"></div>
+        </div>
+        <div class="custom-flex-55">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-50 custom-flex-row loyalty-administrator-modal-points">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PointsColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-center">
+                        <input class="custom-input loyalty-administrator-modal-points-input" data-bind="value: $root.customerLoyaltyPoints, attr: { 'placeholder' : language.Translate('Points', null)}" type="number" autocomplete="off" tabindex="1" />
+                    </div>
+                </div>
+                <div class="custom-flex-50 custom-flex-row loyalty-administrator-modal-description">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('UserNoteColon', null)"></div>
+                    <div class="custom-flex-60 custom-flex-center">
+                        <input class="custom-input loyalty-administrator-modal-description-input" data-bind="value: $root.customerLoyaltyDescription, attr: { 'placeholder' : language.Translate('NoteOptional', null)}" type="text" autocomplete="off" tabindex="2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.AddLoyaltyPointsConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.AddLoyaltyPointsCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loyaltyOptions" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-extra-large custom-flex-column">
+        <div class="custom-flex-10 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('LoyaltyCaps', null)"></div>
+        </div>
+        <div class="custom-flex-78 loyalty-options-body" data-bind="with: $root.loyaltyOptions">
+            <div class="custom-full-width custom-flex-column loyalty-options-container">
+                <div class="custom-flex-10 custom-flex-row">
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AvailablePointsColon', null)"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-extra-large" data-bind="text: AvailablePoints"></div>
+                    <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ConsumePointsColon', null)"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-extra-large" data-bind="text: SpentPoints()"></div>
+                </div>
+                <div class="loyalty-divider"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('AmountDiscount', null)"></div>
+                <div class="custom-flex-10 custom-flex-row" data-bind="with: RedeemDiscount">
+                    <div class="custom-flex-35 custom-flex-start custom-text-black" data-bind="text: language.Translate('MaximumDiscountAmountColon', null)"></div>
+                    <div class="custom-flex-10 custom-flex-end custom-text-black" data-bind="text: MaxDiscountAmount.toFixed(2)"></div>
+                    <div class="custom-flex-5 custom-flex-center custom-text-black"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                    <div class="custom-flex-30 custom-flex-start custom-text-black" data-bind="text: language.Translate('PointCostColon', null)"></div>
+                    <div class="custom-flex-10 custom-flex-center custom-text-black" data-bind="text: Points"></div>
+                    <div class="custom-flex-10 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-amount-discount-button" data-bind="click: $root.CheckLoyaltyOption.bind($data, $data), clickBubble: false, css: { 'custom-default-button-success' : IsChecked() }" tabindex="-1"><i class="fa fa-gem custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="loyalty-divider"></div>
+                <div class="custom-flex-10 custom-flex-center custom-text-black custom-text-bold" data-bind="text: language.Translate('ProductDiscount', null)"></div>
+                <div class="custom-flex-50 custom-flex-column" id="scrollbar-style" data-bind="foreach: RedeemProduct">
+                    <div>
+                        <!-- ko if: ProductId != null -->
+                        <div class="custom-flex-row loyalty-item">
+                            <div class="custom-flex-7 custom-flex-end custom-text-black custom-text-bold" data-bind="text: Quantity"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold">x</div>
+                            <div class="custom-flex-68 custom-flex-start custom-text-black custom-text-bold" data-bind="text: Product"></div>
+                            <div class="custom-flex-10 custom-flex-center custom-text-black" data-bind="text: Points"></div>
+                            <div class="custom-flex-10 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-free-product-button" data-bind="click: $root.CheckLoyaltyOption.bind($data, $data), clickBubble: false, css: { 'custom-default-button-success' : IsChecked() }" tabindex="-1"><i class="fa fa-gem custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: ProductCategoryId != null -->
+                        <div class="custom-flex-row loyalty-item">
+                            <div class="custom-flex-7 custom-flex-end custom-text-black custom-text-bold" data-bind="text: Quantity"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold">x</div>
+                            <div class="custom-flex-68 custom-flex-start custom-text-black custom-text-bold" data-bind="text: ProductCategory"></div>
+                            <div class="custom-flex-10 custom-flex-center custom-text-black" data-bind="text: Points"></div>
+                            <div class="custom-flex-10 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-free-product-button" data-bind="click: $root.CheckLoyaltyOption.bind($data, $data), clickBubble: false, css: { 'custom-default-button-success' : IsChecked() }" tabindex="-1"><i class="fa fa-gem custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-12 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: $root.ShowLoyaltyOptionsConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: $root.ShowLoyaltyOptionsCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loyaltyProductOptions" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-extra-large custom-flex-column">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('ProductsPerCategoryCaps', null)"></div>
+        </div>
+        <div class="custom-flex-76 custom-flex-column loyalty-product-options-body" data-bind="with: $root.loyaltyOptions">
+            <div class="custom-flex-100 custom-flex-column" id="scrollbar-style" data-bind="foreach: ProductOptions">
+                <div>
+                    <div class="custom-flex-row loyalty-product-options-option-header">
+                        <div class="custom-flex-18 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CategoryColon', null)"></div>
+                        <div class="custom-flex-30 custom-flex-end custom-text-black" data-bind="text: ProductCategory"></div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-35 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('DiscountQuantityColon', null)"></div>
+                        <div class="custom-flex-9 custom-flex-end custom-text-black custom-text-extra-large" data-bind="text: Quantity"></div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-35 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CurrentQuantityColon', null)"></div>
+                        <div class="custom-flex-9 custom-flex-end custom-text-black custom-text-extra-large" data-bind="text: InsertedQuantity()"></div>
+                    </div>
+                    <div class="custom-flex-wrap" data-bind="foreach: ProductList">
+                        <div class="custom-flex-center loyalty-product-options-product-button-container">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-small loyalty-product-options-product-button" data-bind="text: Description, click: $root.ToggleLoyaltyProduct.bind($data, $data, true), clickBubble: false" tabindex="-1"></button>
+                        </div>
+                    </div>
+                    <div class="custom-flex-column loyalty-product-options-inserted-products-container" data-bind="foreach: InsertedProductList">
+                        <div class="custom-flex-row loyalty-product-options-inserted-product">
+                            <div class="custom-flex-2"></div>
+                            <div class="custom-flex-88 custom-flex-start custom-text-black custom-text-small" data-bind="text: Description"></div>
+                            <div class="custom-flex-10 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold custom-text-small loyalty-product-options-inserted-product-button" data-bind="click: $root.ToggleLoyaltyProduct.bind($data, $data, false), clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-12 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: $root.CloseLoyaltyProductOptions, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>

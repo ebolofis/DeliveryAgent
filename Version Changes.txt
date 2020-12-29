@@ -1,0 +1,378 @@
+??/??/2020 Version 5.0.20.0
+===========================
+- Copy customer information to another customer, along with its addresses
+- Change store and price list when selecting delivery in pos view
+
+22/09/2020 Version 5.0.19.0
+===========================
+- Bugfix: Show map marker on terra maps
+- Bugfix: Show goodys loyalty giftcards multitude text instead of goodys loyalty customer points text in customer view
+- Restore map marker image on terra maps
+
+17/09/2020 Version 5.0.18.0
+===========================
+- Navigate to page when inserting product with navigation option
+- Edit temporary customer message in messages supervisor view
+- Download order in file in orders supervisor view
+- Refresh orders in orders supervisor view
+- External Id in orders supervisor view
+- Different modify customer button text in customer modal in pos view
+- Show goodys loyalty giftcards multitude instead of goodys loyalty customer points in customer view
+- Change map marker image on terra maps
+
+20/07/2020 Version 5.0.17.0
+===========================
+- Messages supervisor view
+- Submit temporary customer message
+- Edit temporary customer message in customer view
+- Redirect to customer message creation after clearing order
+- Notify on customer last order note when selecting the customer
+- Add refresh map markers button in insert address tab
+- Places of interest within vicinity in terra maps
+- Search goodys loyalty customer with loyalty id
+
+11/05/2020 Version 5.0.16.0
+===========================
+- Bugfix: Clear selected quantity when completing or clearing order
+- Bugfix: Reverse discount product price with main product price when applying free item goodys coupon
+- Bugfix: Do not include goodys coupon order items in order when re-doing order
+- Remove address information from terra maps from customer note (re-changed from Version 5.0.15.0)
+- Manage anonymous customer
+- Customer complaint in customer messages
+- Store in customer messages
+- Initialize order and store in customer messages
+- Select store for delivery order parametrically
+- Sort stores parametrically
+- De-activate credit card payment in specific stores
+- Select address for order parametrically
+- Update address with call number
+- Product code in modify order item modal
+- View on hold orders in orders supervisor view
+- Show order notes, order discount, order details with code, item remark and discount and order detail extras with code in orders supervisor view
+- Notify on goodys loyalty customer status when starting a new order instead of when selecting the customer
+- Notify on goodys loyalty customer status if total multitude of orders is less than 5
+
+16/04/2020 Version 5.0.15.0
+===========================
+- Bugfix: Set discount product price as opposite to main product price when applying free item goodys coupon
+- Download order in file in customer view
+- Set address information from terra maps on customer note and address friendly name
+- Show specific order number in orders supervisor view parametrically
+
+13/04/2020 Version 5.0.14.0
+===========================
+- Show modify order button parametrically
+
+10/04/2020 Version 5.0.13.0
+===========================
+- Bugfix: Show map marker on terra maps
+- Apply extras compatibility according to ingredient category
+- Notify on minimum order amount
+- Add OtherDiscount in post order details model
+- Show address information on terra maps
+- Updated order origin enumerator
+- Tab index in inputs, textareas and buttons
+- Order remark with maximum size 200 characters
+
+27/01/2020 Version 5.0.12.0
+===========================
+- Bugfix: Do not allow discount with goodys coupon 
+- Store id in goodys coupon model
+- Smoother scrollable searched customers
+
+20/01/2020 Version 5.0.11.0
+===========================
+- Bugfix: Allow modification of invoice type of modified order
+- Redeem goodys coupon
+- Apply goodys coupon at order completion
+- Insert main product and discount product when applying free item goodys coupon
+- Highlight invalid goodys loyalty giftcards
+
+10/01/2020 Version 5.0.10.0
+===========================
+- Bugfix: Show map marker on terra maps
+- Goodys loyalty
+- Goodys coupons
+- Ignore store check for shipping address in api
+
+04/12/2019 Version 5.0.9.0
+===========================
+- Bugfix: Load terra scripts correctly
+
+03/12/2019 Version 5.0.8.0
+===========================
+- Show address area and address city in order tab parametrically (re-changed from Version 5.0.7.0)
+- Select address from available results parametrically (re-changed from Version 5.0.0.0)
+- Add Metadata and CheckShippingAddress in order model
+- Add ExtId3 and ExtId4 in customer model
+
+28/11/2019 Version 5.0.7.0
+===========================
+- Show address area and address city in order tab
+
+28/11/2019 Version 5.0.6.0
+===========================
+- Add clear order button in customer message tab
+- Show address area and address city in searched customers
+
+22/11/2019 Version 5.0.5.0
+===========================
+- Bugfix: Re-apply vodafone discounts on modifying order
+- Bugfix: Re-apply vodafone discounts on changing store
+- Bugfix: Show map marker on terra maps
+- Apply loyalty points in order if there is vodafone discount parametrically
+- Allow new message without subcategory
+- Select associated order from last orders for new message
+- Add return button in available addresses selection
+
+14/11/2019 Version 5.0.4.0
+===========================
+- New external order models
+- Do not show error message when there is no external customer plugin installed
+
+06/11/2019 Version 5.0.3.0
+===========================
+- Get external customer plugin configuration
+- Get map plugin configuration
+
+04/11/2019 Version 5.0.2.0
+===========================
+- Update product shortages by order frequency
+
+01/11/2019 Version 5.0.1.0
+===========================
+- Show available phones in searched customers parametrically (re-changed from Version 4.1.1.0)
+- Show if customer is loyalty in searched customers parametrically (re-changed from Version 5.0.0.0)
+- Show edit selected customer button in order tab parametrically (re-changed from Version 5.0.0.0)
+
+31/10/2019 Version 5.0.0.0
+===========================
+- Get agent configuration from api
+- Generic maps (google or terra)
+- Check map initialization
+- Select address from available results
+- Get new customer information from external source
+- Address proximity in address model
+- Match new address with store
+- Update address information on map click
+- Show if selected customer is loyalty in order tab
+- Edit selected customer in order tab
+
+11/10/2019 Version 4.1.1.0
+===========================
+- Embedded messages management
+- Scrollable searched customers
+- Available phones in searched customers
+- Search address with place name
+- Communication phone and loyalty code in order
+
+25/09/2019 Version 4.1.0.0
+===========================
+- Manage customer messages
+- Historic customer messages
+
+09/09/2019 Version 4.0.30.0
+===========================
+- Add PaymentId in order model
+- New on hold order status
+
+08/08/2019 Version 4.0.29.0
+===========================
+- Bugfix: Apply vodafone discount when there are vodafone codes with different product categories
+- Bugfix: Styling changes for browser update
+
+06/08/2019 Version 4.0.28.0
+===========================
+- Bugfix: Hide item remarks if they are empty string
+- Make last edited address as last customer address
+- Update modified addresses only when updating customer
+
+09/07/2019 Version 4.0.27.0
+===========================
+- Ask for permission to modify order when its completion time is less than 6 minutes and it is sent to respective store
+
+05/07/2019 Version 4.0.26.0
+===========================
+- Modify customer during order taking
+- Refresh order item total after clearing extra
+
+26/06/2019 Version 4.0.25.0
+===========================
+- Insert loyalty points to customer
+- Add IsLoyalty and IsVodafone fields to post order detail model
+
+24/06/2019 Version 4.0.24.0
+===========================
+- Re-apply vodafone discounts after adding or removing order items or extras (re-changed from Version 4.0.23.0)
+- Restore order items after changing store
+
+20/06/2019 Version 4.0.23.0
+===========================
+- Update customer with selected billing address
+- Select store when selecting take out in pos view
+- Select billing address when selecting bill in pos view
+- Remove vodafone discounts when adding or removing order items
+
+18/06/2019 Version 4.0.22.0
+===========================
+- Allow modification of order when its completion time is less than 6 minutes but it is not sent to respective store (re-changed from Version 4.0.21.0)
+
+14/06/2019 Version 4.0.21.0
+===========================
+- Add password verification in customer or address deletion
+- Different information messages during order modification
+- Set maximum time of order modification before completion as 3 minutes
+- Allow modification of order when its completion time is less than 3 minutes but it is not sent to respective store
+
+10/06/2019 Version 4.0.20.0
+===========================
+- Bugfix: Set correct start price when when applying vodafone discount
+- Bugfix: Updated order status enumerator
+
+10/06/2019 Version 4.0.19.0
+===========================
+- Bugfix: Allow modification of pending orders
+
+07/06/2019 Version 4.0.18.0
+===========================
+- Bugfix: Set correct start price when removing extra from main item
+
+07/06/2019 Version 4.0.17.0
+===========================
+- Updated order status enumerator
+- Staff name in order modal
+
+06/06/2019 Version 4.0.16.0
+===========================
+- Bugfix: Set discount to extras when it is greater than main item's price
+- Bugfix: Set product shortages according to selected store
+- Bugfix: Set correct loyalty redeem points during order modification
+- Bugfix: Do not allow discount to vodafone items
+- Bugfix: Do not allow quantity change to vodafone items
+- Bugfix: Do not allow return of vodafone items
+- Bugfix: Show last active customer order even when it is in different dates
+- Cancel order in previous store before adding order in new store during order modification
+- Refresh product shortages when changing store
+- Complete date format in order date in order modal
+- Pre-paid status in order modal
+- View delayed orders in orders supervisor view
+- Agent name in orders supervisor view
+
+31/05/2019 Version 4.0.15.0
+===========================
+- Bugfix: Clear stores before refreshing them
+- Bugfix: Pre-check paid order during order modification
+- Bugfix: Keep order remark and vodafone codes during order modification
+- Bugfix: Update extras price during order modification
+- Bugfix: Copy item remark in order item model
+- Error messages for invalid model
+- Hide secret notes from order modal
+- Update zip code in external orders only when it is empty
+
+29/05/2019 Version 4.0.14.0
+===========================
+- Clear phone on hold after customer search
+
+28/05/2019 Version 4.0.13.0
+===========================
+- Apply vodafone discount according to main item price along with extras (re-changed from Version 4.0.12.0)
+- Extras of vodafone items nullify their respective price (re-changed from Version 4.0.12.0)
+- Do not allow extras to vodafone items (re-changed from Version 4.0.12.0)
+
+24/05/2019 Version 4.0.12.0
+===========================
+- Apply vodafone discount according to main item price
+- Extras of loyalty or vodafone items keep their respective price
+- Add extras to loyalty or vodafone items with respective price
+
+24/05/2019 Version 4.0.11.0
+===========================
+- Bugfix: Do not allow multiple clicks in sending order button
+- Bugfix: Correct vat in price list details of page buttons and page buttons details
+- Get staff by Id after registration
+- External object model with current staff and list of applied vodafone coupons
+
+17/05/2019 Version 4.0.10.0
+===========================
+- Maintain estimated completion time after order modification (re-changed from Version 4.0.4.0)
+- Notify on discount removal after order modification
+
+16/05/2019 Version 4.0.9.0
+===========================
+- Customer name, customer phone and customer address in orders supervisor view
+
+13/05/2019 Version 4.0.8.0
+===========================
+- Match selected customer address with store in pos view
+
+10/05/2019 Version 4.0.7.0
+===========================
+- Refresh stores before customer search
+
+09/05/2019 Version 4.0.6.0
+===========================
+- Bugfix: Nullify price of new order item extra during Loyalty discount
+- Bugfix: Block new order item extra during Vodafone discount
+
+07/05/2019 Version 4.0.5.0
+===========================
+- Cancel selected order and create new order when changing store during modification
+
+03/05/2019 Version 4.0.4.0
+===========================
+- Bugfix: Correct delay in historic orders and order modal
+- Add StaffId and AgentNumber in order model
+- Inform agent on failed orders
+- Select store in pos view
+- Remove loyalty items from order
+- Set maximum multitude of phones in history as 5
+- Item remarks in order modals in customer view and external api view
+- Change estimated completion time after order modification
+- Updated price list type enumerator
+
+22/04/2019 Version 4.0.3.0
+===========================
+- Bugfix: Do not allow open percentage with percentage greater than 100%
+- Bugfix: Correct estimated completion time in order modal
+- Bugfix: Split order item with its respective extras during Vodafone discount
+- Bugfix: Nullify price of order item extras during Loyalty or Vodafone discount
+- Highlight Loyalty and Vodafone items
+- Incompatible Loyalty and Vodafone discounts
+- Store unavailable when its id is negative
+- Enable cursor selection
+- Sort customers alphabetically
+- Start date in order modal
+- Order origin in order modal
+- Order origin and its filter in orders supervisor view
+- Sort agent orders first in orders supervisor view
+
+15/04/2019 Version 4.0.2.0
+===========================
+- Check phone input before customer search
+- Refresh stores on customer view load
+
+10/04/2019 Version 4.0.1.0
+===========================
+- Resend all external api orders
+- Errors in external api view
+
+10/04/2019 Version 4.0.0.0
+===========================
+- Release version
+
+TODO
+======================================================================================================================================================
+- Resize window in pos view
+- Refactor orders supervisor
+- Tax
+- Combo items
+- Modify IsLoyalty and IsGoodys items
+- Move loyalty code in loyalty-module
+- Move vodafone code in vodafone-module
+
+IN PROGRESS
+======================================================================================================================================================
+
+DONE
+======================================================================================================================================================
+- Multilingual

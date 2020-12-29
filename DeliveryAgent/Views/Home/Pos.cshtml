@@ -1,0 +1,410 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Home/Partials/PosModals.cshtml")
+@Html.Partial("~/Views/Shared/Modules/LoyaltyModals.cshtml")
+@Html.Partial("~/Views/Shared/Modules/GoodysModals.cshtml")
+@Html.Partial("~/Views/Shared/Modules/VodafoneModals.cshtml")
+@Html.Partial("~/Views/Shared/GeneralModals.cshtml")
+
+@section head{
+    <link href="~/Content/Home/Pos.css" rel="stylesheet" />
+    <link href="~/Content/Modules/DateTimePicker.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Keyboard.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Pagination.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Loyalty.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Goodys.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Vodafone.css" rel="stylesheet" />
+}
+
+@section header {
+    <div class="custom-full-height custom-flex-row custom-header">
+        <div class="custom-flex-12 custom-flex-center">
+            <div class="hit-logo"></div>
+        </div>
+        <div class="custom-flex-13 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-phone custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-phone-text" data-bind="text: $root.selectedPhone"></div>
+        </div>
+        <div class="custom-flex-15 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-user custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-user-text" data-bind="text: $root.currentStaff() != null ? $root.currentStaff().Username : ''"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center" data-bind="with: $root.signalR">
+            <div class="custom-flex-center" data-bind="css: { 'background-round-success' : status() == connectionStatusesEnum.Connected, 'background-round-warning' : (status() == connectionStatusesEnum.Connecting || status() == connectionStatusesEnum.Reconnecting), 'background-round-error' : status() == connectionStatusesEnum.Disconnected }">
+                <i class="fa fa-wifi custom-fa-faint"></i>
+            </div>
+        </div>
+        <div class="custom-flex-15 custom-flex-center">
+            <div class="custom-full-width custom-full-height custom-flex-row">
+                <div class="custom-flex-75 custom-flex-center">
+                    <input class="custom-input custom-header-search-product-input" id="searchProduct" data-bind="value: $root.productSearchInput, attr: { 'placeholder' : language.Translate('Product', null)}" type="text" autocomplete="off" tabindex="-1" />
+                </div>
+                <div class="custom-flex-25 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-header-search-product-keyboard" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'productSearchInput', 'searchProduct', 'searchProduct', $root.SearchProduct, null, keyboardTypesEnum.Alphanumeric), clickBubble: false" tabindex="-1"><i class="fa fa-keyboard custom-fa-faint"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-15">
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-center custom-cursor custom-header-notification" data-bind="click: $root.OpenFailedOrders"><i class="fa fa-bell custom-fa-faint"></i></div>
+            <div class="custom-flex-center custom-text-white custom-text-extra-small custom-notification" data-bind="text: $root.failedOrders().length, visible: $root.failedOrders().length > 0"></div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-small" data-bind="text: moment.utc().format('DD-MM-YYYY')"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.computedClock"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-5 custom-flex-center custom-header-navigation" data-bind="click: $root.OpenGeneralActions, clickBubble: false">
+                <div class="custom-flex-center">
+                    <icon class="fa fa-bars fa-2x custom-fa-faint"></icon>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="custom-body">
+    <div class="custom-full-height custom-flex-row">
+        <div class="custom-flex-65">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-7 custom-flex-row" data-bind="with: $root.pagesPagination">
+                    <div class="custom-flex-5 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large pages-button" data-bind="click: MovePrevious, clickBubble: false" tabindex="-1"><i class="fa fa-angle-left custom-fa-faint"></i></button>
+                    </div>
+                    <div class="custom-flex-90">
+                        <ul class="custom-flex-row custom-flex-start pages-container" data-bind="foreach: entityList">
+                            <li class="custom-flex-16 custom-flex-center custom-text-black custom-text-bold custom-text-small pages-tab" data-bind="text: Description, click: $root.SelectPage.bind($data, $data), clickBubble: false, css: { 'pages-tab-selected' : $root.selectedPage() == $data }, visible: $data.Sort > 0"></li>
+                        </ul>
+                    </div>
+                    <div class="custom-flex-5 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large pages-button" data-bind="click: MoveNext, clickBubble: false" tabindex="-1"><i class="fa fa-angle-right custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="custom-flex-70 custom-flex-row page-buttons-main-container" data-bind="with: $root.pageButtonsPagination">
+                    <div class="custom-flex-5 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-buttons-navigation-button" data-bind="click: MovePrevious, clickBubble: false" tabindex="-1"><i class="fa fa-chevron-left custom-fa-faint"></i></button>
+                    </div>
+                    <div class="custom-flex-90 custom-flex-wrap page-buttons-container" data-bind="foreach: entityList">
+                        <div class="custom-flex-center page-buttons-page-button">
+                            <button class="custom-default-button custom-default-button-simple page-buttons-page-button-button" data-bind="dblclick: {single: $root.SelectPageButton.bind($data, $data, false), double: $root.SelectPageButton.bind($data, $data, true)}, clickBubble: false, enable: ShortageType == null" tabindex="-1">
+                                <div class="custom-full-height custom-flex-column">
+                                    <div class="custom-flex-80 custom-text-black custom-text-bold custom-text-small-medium page-buttons-page-button-description" data-bind="text: Description, css: { 'page-buttons-page-button-button-permanent-shortage' : ShortageType == 1 }"></div>
+                                    <div class="custom-flex-20 page-buttons-page-button-footer" data-bind="style: { 'background' : Background }"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="custom-flex-5 custom-flex-center">
+                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-buttons-navigation-button" data-bind="click: MoveNext, clickBubble: false" tabindex="-1"><i class="fa fa-chevron-right custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="custom-flex-1"></div>
+                <div class="custom-flex-21 custom-flex-row">
+                    <div class="custom-flex-83">
+                        <div class="custom-full-width custom-flex-column page-button-details-main-container">
+                            <div class="custom-flex-80 custom-flex-row" data-bind="with: $root.pageButtonDetailsPagination">
+                                <div class="custom-flex-5 custom-flex-center">
+                                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-button-details-navigation-button" data-bind="click: MovePrevious, clickBubble: false" tabindex="-1"><i class="fa fa-angle-left custom-fa-faint"></i></button>
+                                </div>
+                                <div class="custom-flex-90 custom-flex-wrap page-button-details-container" data-bind="foreach: entityList">
+                                    <div class="page-button-details-button-main-container">
+                                        <div class="custom-full-height custom-flex-column page-button-details-button-container" data-bind="css: { 'page-button-details-button-selected' : $root.selectedPageButtonDetail() == $data }">
+                                            <div class="custom-flex-80 page-button-details-button-buttons">
+                                                <div class="custom-full-width custom-flex-row" data-bind="css: { 'page-button-details-inverse' : Type == 0 }">
+                                                    <div class="custom-flex-20 custom-flex-center">
+                                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-button-details-button" data-bind="click: $root.SelectPageButtonDetail.bind($data, $data, extraAction.Remove), clickBubble: false, enable: MinusEnabled(), css: { 'page-button-details-inverse' : Type == 0, 'custom-text-white' : Type == 0 }" tabindex="-1"><i class="fa fa-minus custom-fa-faint"></i></button>
+                                                    </div>
+                                                    <div class="custom-flex-60 custom-flex-center custom-text-black custom-text-bold custom-text-extra-extra-small" data-bind="text: Description, css: { 'custom-text-white' : Type == 0 }"></div>
+                                                    <div class="custom-flex-20 custom-flex-center">
+                                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-button-details-button" data-bind="click: $root.SelectPageButtonDetail.bind($data, $data, extraAction.Add), clickBubble: false, enable: PlusEnabled(), css: { 'page-button-details-inverse' : Type == 0, 'custom-text-white' : Type == 0 }" tabindex="-1"><i class="fa fa-plus custom-fa-faint"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="custom-flex-20 page-button-details-button-footer" data-bind="style: { 'background' : Background }"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="custom-flex-5 custom-flex-center">
+                                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-extra-large page-button-details-navigation-button" data-bind="click: MoveNext, clickBubble: false" tabindex="-1"><i class="fa fa-angle-right custom-fa-faint"></i></button>
+                                </div>
+                            </div>
+                            <div class="custom-flex-20 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold page-button-details-all-button" data-bind="click: $root.ShowAllPageButtonDetails, clickBubble: false" tabindex="-1"><i class="fa fa-angle-double-down custom-fa-faint"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-flex-1"></div>
+                    <div class="custom-flex-16 multiplier-container">
+                        <div class="custom-full-width custom-flex-column">
+                            <div class="custom-flex-25">
+                                <div class="custom-full-width custom-flex-row">
+                                    <div class="custom-flex-50 custom-flex-center">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x2', click: $root.SelectQuantity.bind($data, 2), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '2' }" tabindex="-1"></button>
+                                    </div>
+                                    <div class="custom-flex-50 custom-flex-center">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x3', click: $root.SelectQuantity.bind($data, 3), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '3' }" tabindex="-1"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-flex-25">
+                                <div class="custom-full-width custom-flex-row">
+                                    <div class="custom-flex-50 custom-flex-center">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x4', click: $root.SelectQuantity.bind($data, 4), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '4' }" tabindex="-1"></button>
+                                    </div>
+                                    <div class="custom-flex-50 custom-flex-center">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x5', click: $root.SelectQuantity.bind($data, 5), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '5' }" tabindex="-1"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-flex-25">
+                                <div class="custom-flex-50 custom-flex-center">
+                                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x6', click: $root.SelectQuantity.bind($data, 6), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '6' }" tabindex="-1"></button>
+                                </div>
+                                <div class="custom-flex-50 custom-flex-center">
+                                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-button" data-bind="text: 'x7', click: $root.SelectQuantity.bind($data, 7), clickBubble: false, css: { 'custom-default-button-success' : $root.selectedQuantity() == '7' }" tabindex="-1"></button>
+                                </div>
+                            </div>
+                            <div class="custom-flex-25 custom-flex-center">
+                                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold multiplier-other-button" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'selectedQuantity', 'quantityMultiplierInput', 'quantityMultiplierPosition', null, null, keyboardTypesEnum.Numeric), clickBubble: false, attr: { 'id' : 'quantityMultiplierPosition' }" tabindex="-1"><i class="fa fa-ellipsis-h custom-fa-faint"></i></button>
+                                <input style="display: none;" data-bind="attr: { 'id' : 'quantityMultiplierInput' }" tabindex="-1" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-1"></div>
+            </div>
+        </div>
+        <div class="custom-flex-35">
+            <div class="custom-full-width custom-flex-column">
+                <div class="custom-flex-6">
+                    <div class="custom-full-width custom-flex-row">
+                        <div class="custom-flex-50 custom-flex-center dropdown-menu-container">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium selection-button" tabindex="-1" data-toggle="dropdown">
+                                <div class="custom-flex-90 custom-flex-start" data-bind="text: $root.selectedSaleType() != null ? $root.selectedSaleType().Description : ''"></div>
+                                <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: $root.saleTypes">
+                                <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectSaleType.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                            </ul>
+                        </div>
+                        <div class="custom-flex-50 custom-flex-center dropdown-menu-container">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-row custom-flex-center custom-text-black custon-text-medium selection-button" tabindex="-1" data-toggle="dropdown">
+                                <div class="custom-flex-90 custom-flex-start" data-bind="text: $root.selectedPriceList() != null ? $root.selectedPriceList().PriceListDescription : ''"></div>
+                                <div class="custom-flex-10 custom-flex-center"><i class="fa fa-caret-down custom-fa-faint"></i></div>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-long" id="scrollbar-style" data-bind="foreach: $root.priceLists">
+                                <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectPriceList.bind($data, $data) }, visible: ($root.selectedCustomer() != null ? $root.selectedCustomer().Store != null ? $root.selectedCustomer().Store.Id == DAStoreId : false : false) && ($root.selectedSaleType() != null ? ((PriceListType == priceListTypeEnum.Delivery && $root.selectedSaleType().Type == saleTypeEnum.Delivery) || (PriceListType == priceListTypeEnum.Takeout && $root.selectedSaleType().Type == saleTypeEnum.Takeout)) : false)"><span data-bind="text: PriceListDescription"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-94 order-container">
+                    <div class="custom-full-width custom-flex-column">
+                        <div class="custom-flex-7 order-container-header">
+                            <div class="custom-full-width custom-flex-row custom-cursor" data-toggle="collapse" data-target="#order-tools-panel">
+                                <div class="custom-flex-40 custom-flex-start custom-text-white custom-text-bold custom-text-large" data-bind="text: language.Translate('OrderCaps', null)"></div>
+                                <div class="custom-flex-60"></div>
+                            </div>
+                        </div>
+                        <div class="custom-flex-74 custom-flex-column order-container-body" id="scrollbar-style" data-bind="foreach: $root.orderItems">
+                            <div>
+                                <div class="custom-flex-row order-container-body-item" data-bind="click: $root.ModifyOrderItem.bind($data, $data), clickBubble: false, css: { 'order-container-body-loyalty-item' : (IsLoyalty()), 'order-container-body-vodafone-item' : (IsVodafone()), 'order-container-body-goodys-item' : (IsGoodys()) }">
+                                    <div class="custom-flex-10 custom-flex-end custom-text-black" data-bind="text: Quantity(), click: $root.ChangeOrderItemQuantity.bind($data, $data, $index()), clickBubble: false, attr: { 'id' : 'orderItemQuantityRow' + $index() }"></div>
+                                    <div class="custom-flex-5 custom-flex-center custom-text-black">x</div>
+                                    <!-- ko if: Extras().length > 0 -->
+                                    <div class="custom-flex-55 custom-flex-start custom-text-black custom-text-bold custom-text-small-medium" data-bind="text: Description"></div>
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black" data-bind="text: '(' + TotalWithExtras().toFixed(2) + ')'"></div>
+                                    <!-- /ko -->
+                                    <!-- ko if: Extras().length == 0 -->
+                                    <div class="custom-flex-70 custom-flex-start custom-text-black custom-text-bold custom-text-small-medium" data-bind="text: Description"></div>
+                                    <!-- /ko -->
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black" data-bind="text: Total().toFixed(2)"></div>
+                                    <input style="display: none;" data-bind="attr: { 'id' : 'orderItemQuantityInputRow' + $index() }" tabindex="-1" />
+                                </div>
+                                <!-- ko if: DiscountWithExtras() != 0 -->
+                                <div class="custom-flex-row order-container-body-discount">
+                                    <div class="custom-flex-3"></div>
+                                    <div class="custom-flex-79 custom-flex-start custom-text-black custom-text-small" data-bind="text: language.Translate('DiscountCaps', null)"></div>
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-small" data-bind="text: DiscountWithExtras().toFixed(2)"></div>
+                                    <div class="custom-flex-3"></div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko foreach: Extras() -->
+                                <!-- ko if: Quantity() > 1 -->
+                                <div class="custom-flex-row order-container-body-extra">
+                                    <div class="custom-flex-10 custom-flex-end custom-text-black custom-text-small" data-bind="text: Quantity()"></div>
+                                    <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small">x</div>
+                                    <div class="custom-flex-66 custom-flex-start custom-text-black custom-text-extra-small" data-bind="text: Description"></div>
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-small" data-bind="text: Total().toFixed(2)"></div>
+                                    <div class="custom-flex-4"></div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: Quantity() == 1 -->
+                                <div class="custom-flex-row order-container-body-extra">
+                                    <div class="custom-flex-15 custom-flex-center custom-text-black custom-text-large">+</div>
+                                    <div class="custom-flex-66 custom-flex-start custom-text-black custom-text-extra-small" data-bind="text: Description"></div>
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-small" data-bind="text: Total().toFixed(2)"></div>
+                                    <div class="custom-flex-4"></div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: Quantity() == -1 -->
+                                <div class="custom-flex-row order-container-body-extra-without">
+                                    <div class="custom-flex-15 custom-flex-center custom-text-black custom-text-large">-</div>
+                                    <div class="custom-flex-66 custom-flex-start custom-text-black custom-text-extra-small" data-bind="text: Description"></div>
+                                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-small" data-bind="text: Total().toFixed(2)"></div>
+                                    <div class="custom-flex-4"></div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- /ko -->
+                                <!-- ko if: Remarks() != null -->
+                                <div class="custom-flex-row order-container-body-remark">
+                                    <div class="custom-flex-10 custom-flex-center custom-cursor" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $data, 'Remarks', 'orderItemRemarksInputRow' + $index(), 'orderItemRemarksRow' + $index(), vm.ClearOrderItemEmptyRemarks.bind($data, $data), vm.ClearOrderItemEmptyRemarks.bind($data, $data), keyboardTypesEnum.Alphanumeric), clickBubble: false, attr: { 'id' : 'orderItemRemarksRow' + $index() }"><i class="fa fa-keyboard custom-fa-faint"></i></div>
+                                    <div class="custom-flex-86 custom-flex-start custom-text-black custom-text-small" data-bind="text: Remarks()"></div>
+                                    <div class="custom-flex-4"></div>
+                                    <input style="display: none;" data-bind="attr: { 'id' : 'orderItemRemarksInputRow' + $index() }" tabindex="-1" />
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <div class="custom-flex-19 order-container-footer">
+                            <div class="custom-full-width custom-flex-column">
+                                <div class="custom-flex-25">
+                                    <div class="custom-full-width custom-flex-row">
+                                        <div class="custom-flex-46 custom-flex-start custom-text-white custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('TotalCaps', null)"></div>
+                                        <div class="custom-flex-49 custom-flex-end custom-text-white custom-text-bold custom-text-extra-large" data-bind="text: $root.total().toFixed(2)"></div>
+                                        <div class="custom-flex-5 custom-flex-center custom-text-white custom-text-bold custom-text-extra-large"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                                    </div>
+                                </div>
+                                <div class="order-container-footer-divider"></div>
+                                <div class="custom-flex-25">
+                                    <div class="custom-full-width custom-flex-row">
+                                        <div class="custom-flex-46 custom-flex-start custom-text-black custom-text-bold custom-text-large" data-bind="text: language.Translate('ChangeCaps', null)"></div>
+                                        <div class="custom-flex-49 custom-flex-end custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.change().toFixed(2)"></div>
+                                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-large"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                                    </div>
+                                </div>
+                                <div class="custom-flex-50">
+                                    <div class="custom-full-width custom-flex-row">
+                                        <div class="custom-flex-50 custom-flex-center">
+                                            <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-text-large order-container-footer-button" data-bind="text: language.Translate('PaymentCaps', null), click: $root.CompleteOrder, clickBubble: false" tabindex="-1"></button>
+                                        </div>
+                                        <div class="custom-flex-50 custom-flex-center">
+                                            <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold custom-text-large order-container-footer-button" data-bind="text: language.Translate('CancelCaps', null), click: $root.ClearOrder, clickBubble: false" tabindex="-1"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse in" id="order-tools-panel">
+                            <div class="custom-flex-column">
+                                <div class="custom-flex-wrap">
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('DiscountCaps', null), click: $root.OpenLastOrderItemDiscounts, clickBubble: false" tabindex="-1"></button>
+                                    </div>
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('NoteCaps', null), click: $root.AddLastOrderItemRemarks, clickBubble: false" tabindex="-1"></button>
+                                    </div>
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('RecipeCaps', null), click: $root.ToggleRecipe, clickBubble: false, css: { 'custom-default-button-success' : $root.showRecipe() }" tabindex="-1"></button>
+                                    </div>
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('CustomerCaps', null), click: $root.OpenCustomerAndAddresses, clickBubble: false" tabindex="-1"></button>
+                                    </div>
+                                    <!-- ko if: $root.vodafoneDiscounts().length > 0 -->
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('VodafoneCaps', null), click: $root.OpenVodafoneDiscounts, clickBubble: false" tabindex="-1"></button>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: $root.activeLoyalty() == loyaltyTypeEnum.Goodys -->
+                                    <div class="custom-flex-center order-tools-panel-button-container">
+                                        <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-large order-tools-panel-button" data-bind="text: language.Translate('GoodysCaps', null), click: $root.loyaltyGoodys.ShowCouponValidation, clickBubble: false" tabindex="-1"></button>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+
+}
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Home/PosViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/date-time-picker-module.js"></script>
+    <script src="~/Scripts/Modules/keyboard-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/pagination-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <script src="~/Scripts/Modules/loyalty-module.js"></script>
+    <script src="~/Scripts/Modules/goodys-module.js"></script>
+    <script src="~/Scripts/Modules/vodafone-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/PaginationModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/CustomerModels.js"></script>
+    <script src="~/Scripts/Models/OrderModels.js"></script>
+    <script src="~/Scripts/Models/ProductModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <script src="~/Scripts/Models/StoreModels.js"></script>
+    <script src="~/Scripts/Models/LoyaltyModels.js"></script>
+    <script src="~/Scripts/Models/GoodysModels.js"></script>
+    <script src="~/Scripts/Models/VodafoneModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/Keyboard.js"></script>
+    <script src="~/Scripts/Enumerators/Map.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/Pagination.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/DateTimePicker.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script src="~/Scripts/Enumerators/Product.js"></script>
+    <script src="~/Scripts/Enumerators/Store.js"></script>
+    <script src="~/Scripts/Enumerators/Loyalty.js"></script>
+    <script src="~/Scripts/Enumerators/Goodys.js"></script>
+    <script src="~/Scripts/Enumerators/Coupon.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new PosViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                            vm.SearchProduct();
+                        }
+                        else {
+                            if (vm.dispayAllExtras()) {
+                                vm.SearchIngredient();
+                            }
+                        }
+                    });
+                });
+                window.onresize = vm.OnResize;
+            }
+        }, 100);
+    </script>
+}

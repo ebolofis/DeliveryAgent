@@ -1,0 +1,306 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Display/Partials/MessagesSupervisorModals.cshtml")
+@Html.Partial("~/Views/Shared/GeneralModals.cshtml")
+
+@section head{
+    <link href="~/Content/Display/MessagesSupervisor.css" rel="stylesheet" />
+    <link href="~/Content/Modules/DateTimePicker.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Pagination.css" rel="stylesheet" />
+}
+
+@section header {
+    <div class="custom-full-height custom-flex-row custom-header">
+        <div class="custom-flex-12 custom-flex-center">
+            <div class="hit-logo"></div>
+        </div>
+        <div class="custom-flex-13 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-phone custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-phone-text" data-bind="text: $root.selectedPhone"></div>
+        </div>
+        <div class="custom-flex-15 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-user custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-user-text" data-bind="text: $root.currentStaff() != null ? $root.currentStaff().Username : ''"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center" data-bind="with: $root.signalR">
+            <div class="custom-flex-center" data-bind="css: { 'background-round-success' : status() == connectionStatusesEnum.Connected, 'background-round-warning' : (status() == connectionStatusesEnum.Connecting || status() == connectionStatusesEnum.Reconnecting), 'background-round-error' : status() == connectionStatusesEnum.Disconnected }">
+                <i class="fa fa-wifi custom-fa-faint"></i>
+            </div>
+        </div>
+        <div class="custom-flex-30">
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-center custom-cursor custom-header-notification" data-bind="click: $root.OpenFailedOrders"><i class="fa fa-bell custom-fa-faint"></i></div>
+            <div class="custom-flex-center custom-text-white custom-text-extra-small custom-notification" data-bind="text: $root.failedOrders().length, visible: $root.failedOrders().length > 0"></div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-small" data-bind="text: moment.utc().format('DD-MM-YYYY')"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.computedClock"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-5 custom-flex-center custom-header-navigation" data-bind="click: $root.OpenGeneralActions, clickBubble: false">
+                <div class="custom-flex-center">
+                    <icon class="fa fa-bars fa-2x custom-fa-faint"></icon>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="custom-body">
+    <div class="custom-full-height custom-flex-column messages-supervisor-container">
+        <div class="custom-flex-7 messages-supervisor-filters">
+            <div class="custom-flex-row custom-full-width">
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('Store', null), click: $root.SetStoreFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('Staff', null), click: $root.SetStaffFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('Creation', null), click: $root.SetCreationDateFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('RequestReason', null), click: $root.SetReasonFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('RequestMessage', null), click: $root.SetMessageFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-14 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black messages-supervisor-filter-button" data-bind="text: language.Translate('RequestStatus', null), click: $root.SetStatusFilters, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-8 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white messages-supervisor-action-button" data-bind="click: $root.ClearCustomerMessagesFilters, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+                </div>
+                <div class="custom-flex-8 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black messages-supervisor-action-button" data-bind="click: $root.ApplyCustomerMessagesFilters, clickBubble: false" tabindex="-1"><i class="fa fa-filter custom-fa-faint"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-7 messages-supervisor-header">
+            <div class="custom-flex-row custom-full-width">
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStore, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStore, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-7 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('Store', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStaff, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStaff, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-7 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('Staff', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestCreationDate, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestCreationDate, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-7 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('Creation', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestReason, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestReason, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-10 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('RequestReason', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestCategory, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestCategory, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-10 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('RequestCategory', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestSubcategory, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestSubcategory, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-10 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('RequestSubcategory', null)"></div>
+                </div>
+                <div class="custom-flex-16 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('RequestMessage', null)"></div>
+                </div>
+                <div class="custom-flex-3">
+                    <div class="custom-flex-column custom-full-width custom-flex-center">
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStatus, sortDirectionsEnum.Ascending), clickBubble: false">
+                            <icon class="fa fa-angle-up custom-fa-faint"></icon>
+                        </div>
+                        <div class="custom-flex-2"></div>
+                        <div class="custom-flex-49 custom-flex-center custom-text-black messages-supervisor-sort-container" data-bind="click: $root.SortCustomerMessages.bind($data, sortKeysEnum.RequestStatus, sortDirectionsEnum.Descending), clickBubble: false">
+                            <icon class="fa fa-angle-down custom-fa-faint"></icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-flex-7 custom-flex-start">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('RequestStatus', null)"></div>
+                </div>
+                <div class="custom-flex-5 custom-flex-center">
+                    <div class="custom-text-black custom-text-bold" data-bind="text: language.Translate('Actions', null)"></div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-79 custom-flex-column messages-supervisor-body" data-bind="with: $root.pagination">
+            <div class="custom-flex-85 custom-flex-column" id="scrollbar-style" data-bind="foreach: entityList">
+                <div>
+                    <div class="custom-flex-row pagination-entity-list-entity">
+                        <div class="custom-flex-10 custom-flex-start custom-text-black" data-bind="text: (StoreId != null ? $root.storeOptions()[StoreId] : '')"></div>
+                        <div class="custom-flex-10 custom-flex-start custom-text-black" data-bind="text: (StaffFirstName != null ? StaffFirstName : '') + (StaffFirstName != null && StaffLastName != null ? ' ' : '') + (StaffLastName != null ? StaffLastName : '')"></div>
+                        <div class="custom-flex-10 custom-flex-start custom-text-black" data-bind="text: moment.utc(CreationDate).format('DD-MM-YYYY HH:mm')"></div>
+                        <div class="custom-flex-13 custom-flex-start custom-text-black" data-bind="text: (MainMessage != null ? MainMessage : '')"></div>
+                        <div class="custom-flex-13 custom-flex-start custom-text-black" data-bind="text: (Message != null ? Message : '')"></div>
+                        <div class="custom-flex-13 custom-flex-start custom-text-black" data-bind="text: (MessageDetail != null ? MessageDetail : '')"></div>
+                        <div class="custom-flex-16 custom-flex-start custom-text-black" data-bind="text: (Description != null ? Description : '')"></div>
+                        <div class="custom-flex-10 custom-flex-start custom-text-black" data-bind="text: (IsTemporary ? language.Translate('RequestStatusIncomplete', null) : language.Translate('RequestStatusComplete', null))"></div>
+                        <div class="custom-flex-5 custom-flex-center">
+                            <button class="custom-default-button custom-default-button-success messages-supervisor-edit-message-button" data-bind="click: $root.EditCustomerMessage.bind($data, $data), clickBubble: false, visible: IsTemporary" tabindex="-1"><i class="fa fa-edit custom-fa-faint"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-10 custom-flex-center">
+                <!-- ko if: totalPages() > 1 && !scrollable() -->
+                <ul class="pagination pagination-pagination">
+                    <li><a href="#" data-bind="click: MoveFirst, clickBubble: false">&laquo;</a></li>
+                    <li><a href="#" data-bind="click: MovePrevious, clickBubble: false">&lt;</a></li>
+                    <!-- ko if: hasLeft() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko foreach: new Array(totalPages()) -->
+                    <!-- ko if: ($index() >= $parent.activePage() && $index() <= $parent.activePage() + 2) || ($index() <= $parent.activePage() && $index() >= $parent.activePage() - 2) -->
+                    <li data-bind="css: { active: ($index()) == $parent.activePage() }"><a href="#" data-bind="text: $index() + 1, click: $parent.MoveSpecific.bind($data, $index()), clickBubble: false"></a></li>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: hasRight() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <li><a href="#" data-bind="click: MoveNext, clickBubble: false">&gt;</a></li>
+                    <li><a href="#" data-bind="click: MoveLast, clickBubble: false">&raquo;</a></li>
+                </ul>
+                <!-- /ko -->
+            </div>
+            <div class="custom-flex-5 custom-flex-end custom-text-black">
+                <div>*</div>&nbsp;<div class="custom-text-bold custom-text-large" data-bind="text: totalResults()"></div>&nbsp;<div data-bind="text: language.Translate('Found', null)"></div>
+            </div>
+        </div>
+        <div class="custom-flex-7 custom-flex-row">
+            <div class="custom-flex-79"></div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black messages-supervisor-multitude-button" data-bind="click: $root.SelectCustomerMessagesMultitude.bind($data, 10), clickBubble: false, css: { 'custom-default-button-info' : $root.messagesMultitude() == 10 }" tabindex="-1"><div>10</div></button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black messages-supervisor-multitude-button" data-bind="click: $root.SelectCustomerMessagesMultitude.bind($data, 20), clickBubble: false, css: { 'custom-default-button-info' : $root.messagesMultitude() == 20 }" tabindex="-1"><div>20</div></button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black messages-supervisor-multitude-button" data-bind="click: $root.SelectCustomerMessagesMultitude.bind($data, 50), clickBubble: false, css: { 'custom-default-button-info' : $root.messagesMultitude() == 50 }" tabindex="-1"><div>50</div></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+
+}
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Display/MessagesSupervisorViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/date-time-picker-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/pagination-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/PaginationModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <script src="~/Scripts/Models/StoreModels.js"></script>
+    <script src="~/Scripts/Models/MessageModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/DateTimePicker.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/Pagination.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script src="~/Scripts/Enumerators/Store.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new MessagesSupervisorViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                        }
+                        else {
+                        }
+                    });
+                });
+            }
+        }, 100);
+    </script>
+}

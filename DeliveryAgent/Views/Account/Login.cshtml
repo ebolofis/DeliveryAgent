@@ -1,0 +1,153 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Account/Partials/LoginModals.cshtml")
+
+@section head{
+    <link href="~/Content/Account/Login.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Keyboard.css" rel="stylesheet" />
+}
+
+@section header {
+
+}
+
+<div class="custom-body">
+    <!-- ko if: $root.registerState() == 0 -->
+    <div class="custom-full-height custom-flex-center">
+        <div class="compatibility-check custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: $root.incompatibilityError()"></div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $root.registerState() == 1 -->
+    <div class="custom-full-height custom-flex-center">
+        <div class="register-check custom-flex-column custom-flex-center">
+            <div class="custom-flex-17 custom-flex-center custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('RegisterUser', null)"></div>
+            <div class="register-divider"></div>
+            <div class="custom-flex-48 custom-flex-column custom-full-width">
+                <div class="custom-flex-5"></div>
+                <div class="custom-flex-30 custom-flex-row">
+                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-bold" data-bind="text: language.Translate('UsernameColon', null)"></div>
+                    <div class="custom-flex-2"></div>
+                    <div class="custom-flex-63 custom-flex-center">
+                        <input class="custom-input username-input" id="registerUsername" data-bind="value: $root.registerUsername, attr: { 'placeholder' : language.Translate('Username', null)}" type="text" autocomplete="off" tabindex="1" />
+                    </div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <button class="register-keyboard custom-default-button custom-default-button-simple custom-flex-center" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'registerUsername', 'registerUsername', 'registerUsername', null, null, keyboardTypesEnum.Alphanumeric), clickBubble: false" tabindex="-1"><i class="fa fa-keyboard custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="custom-flex-30">
+                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-bold" data-bind="text: language.Translate('PasswordColon', null)"></div>
+                    <div class="custom-flex-2"></div>
+                    <div class="custom-flex-63 custom-flex-center">
+                        <input class="custom-input password-input" id="registerPassword" data-bind="value: $root.registerPassword, attr: { 'placeholder' : language.Translate('Password', null)}" type="password" autocomplete="off" tabindex="2" />
+                    </div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <button class="register-keyboard custom-default-button custom-default-button-simple custom-flex-center" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'registerPassword', 'registerPassword', 'registerPassword', null, null, keyboardTypesEnum.Alphanumeric), clickBubble: false" tabindex="-1"><i class="fa fa-keyboard custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="custom-flex-30">
+                    <div class="custom-flex-15 custom-flex-end custom-text-black custom-text-bold" data-bind="text: language.Translate('PhoneColon', null)"></div>
+                    <div class="custom-flex-2"></div>
+                    <div class="custom-flex-63 custom-flex-center">
+                        <input class="custom-input phone-input" id="registerPhone" data-bind="value: $root.registerPhone, attr: { 'placeholder' : language.Translate('Phone', null)}" type="number" autocomplete="off" tabindex="3" />
+                    </div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <button class="register-keyboard custom-default-button custom-default-button-simple custom-flex-center" data-bind="click: $root.keyboard.InitializeKeyboard.bind($data, $root, 'registerPhone', 'registerPhone', 'registerPhone', null, null, keyboardTypesEnum.Numeric), clickBubble: false" tabindex="-1"><i class="fa fa-keyboard custom-fa-faint"></i></button>
+                    </div>
+                </div>
+                <div class="custom-flex-5"></div>
+            </div>
+            <div class="custom-flex-15 custom-full-width custom-flex-row" data-bind="with: language">
+                @*<div class="custom-flex-15 custom-flex-end custom-text-black custom-text-bold" data-bind="text: language.Translate('RegionColon', null)"></div>
+                    <div class="custom-flex-85 custom-flex-center">
+                        <!-- ko foreach: ImplementedCultures -->
+                        <div class="custom-full-height custom-flex-10 custom-flex-center">
+                            <div data-bind="click: $root.SelectLanguage.bind($data, Code), clickBubble: false, attr: { 'class' : ImageClass }, css: { 'language-selected' : $root.registerLanguage() == Code }"></div>
+                        </div>
+                        <!-- /ko -->
+                    </div>*@
+            </div>
+            <div class="custom-flex-20 custom-full-width custom-flex-row register-footer">
+                <div class="custom-flex-30">
+                </div>
+                <div class="custom-flex-40 custom-flex-center">
+                    <button class="custom-flex-center custom-default-button custom-default-button-success register-user" data-bind="click: $root.RegisterUser, clickBubble: false" tabindex="-1"><i class="fa fa-arrow-alt-circle-right fa-2x custom-fa-faint"></i></button>
+                </div>
+                <div class="custom-flex-30 custom-flex-center client-version-info">
+                    <div class="custom-full-width custom-flex-row">
+                        <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: language.Translate('ClientVersionColon', null)"></div>
+                        <div class="custom-flex-40 custom-flex-end custom-text-black" data-bind="text: $root.clientVersion"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $root.registerState() == 2 -->
+    <div class="custom-full-height custom-flex-center">
+        <div class="custom-flex-column custom-flex-center loading-logo-container">
+            <div class="custom-flex-50 custom-flex-column custom-flex-center">
+                <div class="symposium-logo loading-logo"></div>
+            </div>
+            <div class="custom-flex-30 custom-flex-column custom-flex-center">
+                <div class="custom-flex-center custom-text-black custom-text-bold custom-text-large" data-bind="text: language.Translate('LoadingMessageOne', null)"></div>
+                <div class="custom-flex-center custom-text-black custom-text-bold custom-text-large" data-bind="text: language.Translate('LoadingMessageTwo', null)"></div>
+            </div>
+            <div class="custom-flex-20 custom-flex-center" style="width: 70%;">
+                <div class="custom-progress-bar-bar" id="downloadingBar">
+                    <div class="custom-progress-bar-progress" id="downloadingProgress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+
+@section footer{
+
+}
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Account/LoginViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/keyboard-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/MapModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/Keyboard.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new LoginViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                            vm.RegisterUser();
+                        }
+                        else {
+                        }
+                    });
+                });
+            }
+        }, 100);
+    </script>
+}

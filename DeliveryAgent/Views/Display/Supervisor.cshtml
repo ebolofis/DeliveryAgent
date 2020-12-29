@@ -1,0 +1,865 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/GeneralModals.cshtml")
+
+@section head{
+    <link href="~/Content/Display/Supervisor.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Keyboard.css" rel="stylesheet" />
+    <link href="~/Content/Modules/Pagination.css" rel="stylesheet" />
+    <link href="~/Content/General/General.css" rel="stylesheet" />
+    <link href="~/Content/Home/Customer.css" rel="stylesheet" />
+}
+
+@section header {
+    <div class="custom-full-height custom-flex-row custom-header">
+        <div class="custom-flex-12 custom-flex-center">
+            <div class="hit-logo"></div>
+        </div>
+        <div class="custom-flex-13 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-phone custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-phone-text" data-bind="text: $root.selectedPhone"></div>
+        </div>
+        <div class="custom-flex-15 custom-flex-start">
+            <div class="custom-flex-center background-round-success">
+                <i class="fa fa-user custom-fa-faint"></i>
+            </div>
+            <div class="custom-text-black custom-text-bold custom-text-small custom-header-user-text" data-bind="text: $root.currentStaff() != null ? $root.currentStaff().Username : ''"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center" data-bind="with: signalR">
+            <div class="custom-flex-center" data-bind="css: { 'background-round-success' : status() == connectionStatusesEnum.Connected, 'background-round-warning' : (status() == connectionStatusesEnum.Connecting || status() == connectionStatusesEnum.Reconnecting), 'background-round-error' : status() == connectionStatusesEnum.Disconnected }">
+                <i class="fa fa-wifi custom-fa-faint"></i>
+            </div>
+        </div>
+        <div class="custom-flex-30">
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-center custom-cursor custom-header-notification" data-bind="click: $root.OpenFailedOrders"><i class="fa fa-bell custom-fa-faint"></i></div>
+            <div class="custom-flex-center custom-text-white custom-text-extra-small custom-notification" data-bind="text: $root.failedOrders().length, visible: $root.failedOrders().length > 0"></div>
+        </div>
+        <div class="custom-flex-10 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-small" data-bind="text: moment.utc().format('YYYY-MM-DD')"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-text-black custom-text-bold custom-text-large" data-bind="text: $root.computedClock"></div>
+        </div>
+        <div class="custom-flex-5 custom-flex-center">
+            <div class="custom-flex-5 custom-flex-center custom-header-navigation" data-bind="click: $root.OpenGeneralActions, clickBubble: false">
+                <div class="custom-flex-center">
+                    <icon class="fa fa-bars fa-2x custom-fa-faint"></icon>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="custom-body customer-container">
+    <div class="custom-full-height custom-flex-column">
+        <!-- ko if : $root.loadingOrders() != true -->
+        <div class="custom-flex-7">
+            <div class="custom-full-width custom-flex-row supervisors-orders-header">
+                @*  Χρόνος *@
+                <div class="custom-flex-10 custom-flex-start custom-text-black">
+                    <input type="date" id="datePicker">
+                </div>
+
+                <div class="custom-flex-1"></div>
+                @*  Κατάστημα *@
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold">Κατάστημα</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.StoresForFilter">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectStore.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-7 custom-flex-start custom-text-black" data-bind="text: $root.storeSelection() != null ? $root.storeSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Delivery ή Take Out *@
+                <div class="custom-flex-2 custom-flex-start custom-text-black custom-text-bold">Είδος</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.saleOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectOrderType.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.orderTypeSelection() != null ? $root.orderTypeSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Κατάσταση *@
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold">Κατάσταση</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.statusOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectOrderStatus.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.orderStatusSelection() != null ? $root.orderStatusSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Προέλευση *@
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold">Προέλευση</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.originOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectOriginStatus.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.originSelection() != null ? $root.originSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Τρόπος Πληρωμής *@
+                <div class="custom-flex-8 custom-flex-start custom-text-black custom-text-bold">Τρόπος Πληρωμής</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.paymentOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectPaymentMethod.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.paymentMethodSelection() != null ? $root.paymentMethodSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Καθυστέρηση *@
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold">Καθυστέρηση</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.delayOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectDelay.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.delaySelection() != null ? $root.delaySelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Σχόλια *@
+                <div class="custom-flex-2 custom-flex-start custom-text-black custom-text-bold">Σχόλια</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.noteOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectNotes.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.notesSelection() != null ? $root.notesSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Σφάλμα *@
+                <div class="custom-flex-2 custom-flex-start custom-text-black custom-text-bold">Σφάλμα</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.errorOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectError.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.errorSelection() != null ? $root.errorSelection().Description : ''"></div>
+
+                <div class="custom-flex-1"></div>
+
+                @*  Καθυστέρηση Στο ίδιο Status *@
+                <div class="custom-flex-2 custom-flex-start custom-text-black custom-text-bold">Παραμένουσες</div>
+                <div class="custom-flex-1 custom-flex-center dropdown-menu-container">
+                    <div class="custom-full-width custom-full-height custom-flex-start custom-cursor" data-toggle="dropdown">
+                        <i class="fa fa-caret-down custom-fa-faint"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-list-left dropdown-menu-list dropdown-menu-list-length-long" data-bind="foreach: $root.delayInSameStatusOptions">
+                        <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectDelayInSameStatus.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                    </ul>
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black" data-bind="text: $root.delayInSameStatusSelection() != null ? $root.delayInSameStatusSelection().Description : ''"></div>
+
+                <div class="custom-flex-8"></div>
+
+                @* Κουμπί Καθαρισμού Φίλτρων  *@
+                <div class="custom-flex-8 custom-full-height custom-flex-start custom-cursor">
+                    <button class="entity-clear custom-default-button custom-default-button-error custom-flex-center" data-bind="click: $root.ClearSearchValues, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+                </div>
+
+                @* Κουμπί Αναζήτησης  *@
+                <div class="custom-flex-8 custom-full-height custom-flex-start custom-cursor">
+                    <button class="entity-search custom-default-button custom-default-button-simple custom-flex-center" style="background-color:#00ff00" data-bind="click: $root.FilterOrders, clickBubble: false" tabindex="-1"><i class="fa fa-search custom-fa-faint"></i></button>
+                </div>
+
+            </div>
+        </div>
+        <div class="custom-flex-10">
+            <div class="custom-full-width custom-flex-row supervisors-orders-header">
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold custom-text-extra-small">Αρ. Παρ/λίας</div>
+                <div class="custom-flex-5 custom-flex-start custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByStoreAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Κατάστημα'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByStoreDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-5 custom-flex-start custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByReceivedTimeAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Ημερομηνία'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByReceivedTimeDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByTypeAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Είδος'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByTypeDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByOrderStatusAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Κατάσταση'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByOrderStatusDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByOriginAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Προέλευση'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByOriginDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByPaymentMethodAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Τρόπος Πληρωμής'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByPaymentMethodDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByInvoiceTypeAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Τύπος Παρ/κού'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByInvoiceTypeDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByStatusChangeAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Μεταβολή Κατάστασης'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByStatusChangeDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-5 custom-flex-end custom-text-black custom-text-bold custom-text-extra-small" style="justify-content: center;">Εκτιμ. Παραδ.</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByFinishDateAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Ημ. Παράδ.'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByFinishDateDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">
+                    <img src="/Images/arrow scroll up@2x.png" data-bind="click: $root.sortByDurationAsc" style="width:20px; height:20px; cursor:pointer;" />
+                    <span data-bind="text: 'Διάρκεια'"></span>
+                    <img src="/Images/arrow scroll down@2x.png" data-bind="click: $root.sortByDurationDesc" style="width:20px; height:20px; cursor:pointer;" />
+                </div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Καθυστέρηση</div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Εξωτ. Id</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Agent</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Όνομα</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Τηλέφωνο</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Διεύθυνση</div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Σχόλια</div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Σφάλμα</div>
+                <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Σφάλμα Λογικής</div>
+                <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-bold custom-text-extra-small">Σύνολο</div>
+            </div>
+        </div>
+        <div class="custom-flex-73 custom-flex-column" data-bind="with: pagination">
+            <!-- ko if: entityList().length > 0 -->
+            <div class="custom-flex-1"></div>
+            <div class="custom-flex-83 custom-flex-column" id="scrollbar-style" data-bind="foreach: entityList">
+                <div>
+                    <div class="custom-flex-row DaOrders-orders-order">
+                        <div class="custom-flex-4 custom-flex-start custom-text-black custom-text-small" data-bind="text: $root.displayOrderNumber() == orderNumberEnum.Agent ? OrderNo : $root.displayOrderNumber() == orderNumberEnum.Store ? StoreOrderNo : '',  click: function () { $root.OpenReceiptHandling($data,$data) }" style="cursor: pointer"></div>
+                        <div class="custom-flex-5 custom-flex-start custom-text-black custom-text-small" data-bind="text: StoreDescr"></div>
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: moment.utc(OrderDate).format('YYYY-MM-DD HH:mm')"></div>
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: OrderType == 20 ? 'Delivery' : 'Take Out', style:{ 'background-color' : $root.getSalesTypeColor(OrderType) }"></div>
+                        <!-- ko if:  Status == -2 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Όλες',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == -1 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Ανοικτή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 0 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Νέα',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 1 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Κουζίνα',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 3 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Έτοιμη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 4 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Καθ΄οδόν',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 5 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Ακυρωμένη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 6 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Κλεισμένη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 7 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Επιστροφή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Status == 11 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Σε αναμονή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 0 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Agent'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 1 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Website'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 2 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Mobile'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 3 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Efood'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 4 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'ClickDelivery'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 5 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Deliveras'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 6 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'Skroutz'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  Origin == 7 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-small badge" data-bind="text: 'DineIn'" style="background-color: #596b5f;"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 1 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Μετρητά'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 2 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'φιλοξενία'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 3 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Room charge'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 4 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Πιστωτική Κάρτα'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 5 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Barcode'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 6 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Voucher'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  AccountType == 7 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Allowence'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 1 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'ΑΛΣ'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 2 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'ΔΠ'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 3 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Ακυρωτικό Απόδειξης'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 4 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Απόδειξη Αυτοπαράδοσης'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 5 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Απόδειξη φιλοξενίας'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 6 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Πίστωση Barcode'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 7 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Τιμολόγιο'"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  InvoiceType == 8 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Ακυρωτικό ΔΠ'"></div>
+                        <!-- /ko -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: moment.utc(StatusChange).format('YYYY-MM-DD HH:mm')"></div>
+                        <!-- ko if:  OrderType == 20 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: moment.utc(EstBillingDate).format('YYYY-MM-DD HH:mm')"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  OrderType == 21 -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: moment.utc(EstTakeoutDate).format('YYYY-MM-DD HH:mm')"></div>
+                        <!-- /ko -->
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: FinishDate != null ? moment.utc(FinishDate).format('YYYY-MM-DD HH:mm') : ''"></div>
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: Duration != null ? Duration + '΄' : ''"></div>
+                        <!-- ko if:  OrderType == 20 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: FinishDate != null ? $root.DelayTime($data,$data) + '΄' : ''"></div>
+                        <!-- /ko -->
+                        <!-- ko if:  OrderType == 21 -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: FinishDate != null ? $root.DelayTime($data,$data) + '΄' : ''"></div>
+                        <!-- /ko -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: (ExtId1 != null ? ExtId1 : '')"></div>
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: (AgentFirstName != null ? AgentFirstName : '') + ' ' + (AgentLastName != null ? AgentLastName : '')"></div>
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: (FirstName != null ? FirstName : '') + ' ' + (LastName != null ? LastName : '')"></div>
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: (Phone1 != null ? Phone1 : '') + '-' + (Mobile != null ? Mobile : '')"></div>
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-small" data-bind="text: (AddressStreet != null ? AddressStreet : '') + ' ' + (AddressNo != null ? AddressNo : '')"></div>
+                        <!-- ko if: Notes -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'Σχόλια', click: function () { $root.OpenNotes($data,$data) }" style="cursor: pointer; color:blue !important"></div>
+                        <!-- /ko -->
+                        <!-- ko if: !Notes -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: ''"></div>
+                        <!-- /ko -->
+                        <!-- ko if: ErrorMessage -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'ErrorMessage', click: function () { $root.OpenErrorMessage($data,$data) }" style="cursor: pointer; color:red !important"></div>
+                        <!-- /ko -->
+                        <!-- ko if: !ErrorMessage -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: ''"></div>
+                        <!-- /ko -->
+                        <!-- ko if: LogicErrors -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: 'LogicErrors', click: function () { $root.OpenLogicErrors($data,$data) }" style="cursor: pointer; color:red !important"></div>
+                        <!-- /ko -->
+                        <!-- ko if: !LogicErrors -->
+                        <div class="custom-flex-4 custom-flex-center custom-text-black custom-text-small" data-bind="text: ''"></div>
+                        <!-- /ko -->
+                        <div class="custom-flex-5 custom-flex-end custom-text-black custom-text-small" data-bind="text: Total.toFixed(2) + ' €'"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-flex-1 customer-divider"></div>
+            <div class="custom-flex-10 custom-flex-center">
+                <!-- ko if: totalPages() > 1 -->
+                <ul class="pagination pagination-pagination">
+                    <li><a href="#" data-bind="click: MoveFirst, clickBubble: false">&laquo;</a></li>
+                    <li><a href="#" data-bind="click: MovePrevious, clickBubble: false">&lt;</a></li>
+                    <!-- ko if: hasLeft() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <!-- ko foreach: new Array(totalPages()) -->
+                    <!-- ko if: ($index() >= $parent.activePage() && $index() <= $parent.activePage() + 2) || ($index() <= $parent.activePage() && $index() >= $parent.activePage() - 2) -->
+                    <li data-bind="css: { active: ($index()) == $parent.activePage() }"><a href="#" data-bind="text: $index() + 1, click: $parent.MoveSpecific.bind($data, $index()), clickBubble: false"></a></li>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: hasRight() -->
+                    <li>
+                        <a href="#"><span>...</span></a>
+                    </li>
+                    <!-- /ko -->
+                    <li><a href="#" data-bind="click: MoveNext, clickBubble: false">&gt;</a></li>
+                    <li><a href="#" data-bind="click: MoveLast, clickBubble: false">&raquo;</a></li>
+                </ul>
+                <!-- /ko -->
+            </div>
+            <div class="custom-flex-5 custom-flex-end custom-text-black">
+                *&nbsp;<div class="custom-text-bold custom-text-large" data-bind="text: totalResults()"></div>&nbsp;βρέθηκαν!
+            </div>
+            <!-- /ko -->
+            <!-- ko if: entityList().length == 0 -->
+            <div class="custom-flex-90">
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $root.loadingOrders() == true -->
+        <div class="custom-flex-90">
+            <div class="custom-flex-center custom-full-width custom-full-height">
+                <i class="fa fa-spinner fa-spin fa-5x"></i>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="custom-flex-10">
+            <div class="custom-flex-72"></div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black supervisor-refresh-orders-button" data-bind="click: $root.RefreshOrders, clickBubble: false"><i class="fa fa-sync custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 10), clickBubble: false, css: { 'custom-default-button-info' : $root.DaOrdersMultitude() == 10 }">10</button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 20), clickBubble: false, css: { 'custom-default-button-info' : $root.DaOrdersMultitude() == 20 }">20</button>
+            </div>
+            <div class="custom-flex-7 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-text-black customer-orders-multitude" data-bind="click: $root.SelectOrdersMultitude.bind($data, 50), clickBubble: false, css: { 'custom-default-button-info' : $root.DaOrdersMultitude() == 50 }">50</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+
+}
+
+@* Handle Receipt Modal *@
+<div class="modal" id="ReceiptHandlingModal">
+    <div class="modal-dialog" style="width:80vw; min-height:60vh;">
+        <div class="modal-content">
+            <div class="modal-header custom-flex-row">
+                <div class="custom-flex-97"><span data-bind="text: 'Λεπτομέρειες Απόδειξης Παραγγελιών'"></span>&nbsp;<strong data-bind="text: ($root.selectedOrder() != null) ? '#' + ($root.displayOrderNumber() == orderNumberEnum.Agent ? $root.selectedOrder().OrderNo : $root.displayOrderNumber() == orderNumberEnum.Store ? $root.selectedOrder().StoreOrderNo : '') :''"></strong></div>
+                <button type="button" class="state-button-modal custom-flex-3 custom-flex-center" data-dismiss="modal" aria-hidden="true"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body" style="min-height:60vh; max-height:60vh; overflow: hidden;">
+                <div style="display:flex;align-items:stretch;position: absolute; height:100%; width:100%; padding:15px;top: 0;left: 0;overflow: hidden;" data-bind="if: $root.receiptLoading() == false">
+                    <!-- ko if: $root.selectedOrder() != null -->
+                    <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;">
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 1 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Απόδειξη Λιανικών Συναλλαγών' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 2 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Δελτίο Παραγγελίας' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 3 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Ακυρωτικό Απόδειξης' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 4 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Απόδειξη Αυτοπαράδοσης' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 5 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Απόδειξη φιλοξενίας' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 6 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Πίστωση Barcode' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 7 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Τιμολόγιο' "></h4>
+                        <!-- /ko -->
+                        <!-- ko if:  $root.selectedOrder().InvoiceType == 8 -->
+                        <h4 style="font-weight: bolder;" data-bind="text: 'Ακυρωτικό Δελτίου Παραγγελίας' "></h4>
+                        <!-- /ko -->
+                        <div style="padding: 5px; display:flex; flex-direction:column; font-size: 12px;" data-bind="with: $root.selectedOrder()">
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text:'Όνομα Πελάτη:'"></label>&nbsp;
+                                <span data-bind="text: FirstName + ' ' + LastName"></span>
+                            </div>
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text:'Διεύθυνση Πελάτη:'"></label>&nbsp;
+                                <span data-bind="text: AddressStreet +' '+ AddressNo + ', ' + City"></span>
+                            </div>
+                            <!-- ko if:  Notes != null -->
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text:'Σχόλια Πελάτη:'"></label>&nbsp;
+                                <span style="color: blue;" data-bind="text: Notes"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if:  LastOrderNotes != null -->
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text:'Σχόλια Τελευταίας Παραγγελίας:'"></label>&nbsp;
+                                <span style="color: blue;" data-bind="text: LastOrderNotes"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if:  SecretNotes != null -->
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text:'Κρυφά Σχόλια Πελάτη:'"></label>&nbsp;
+                                <span style="color: orangered;" data-bind="text: SecretNotes"></span>
+                            </div>
+                            <!-- /ko -->
+                            <div class="row">
+                                <label style="font-variant:small-caps;" data-bind="text: 'Τρόπος Πληρωμής:'"></label>&nbsp;
+                                <!-- ko if:  AccountType == 1 -->
+                                <span style="color: red;" data-bind="text: 'Μετρητά'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 2 -->
+                                <span style="color: red;" data-bind="text: 'φιλοξενία'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 3 -->
+                                <span style="color: red;" data-bind="text: 'Room charge'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 4 -->
+                                <span style="color: red;" data-bind="text: 'Πιστωτική Κάρτα'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 5 -->
+                                <span style="color: red;" data-bind="text: 'Barcode'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 6 -->
+                                <span style="color: red;" data-bind="text: 'Voucher'"></span>
+                                <!-- /ko -->
+                                <!-- ko if:  AccountType == 7 -->
+                                <span style="color: red;" data-bind="text: 'Allowence'"></span>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px; display: flex; flex-direction: column; flex-basis: 50%; flex-grow: 1;" data-bind="with: $root.selectedOrder()">
+                        <table class="table table-striped" style="margin-bottom: 0%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%;" data-bind="text:'Περιγραφή'"></th>
+                                    <th style="width: 15%; text-align: right;" data-bind="text:'Ποσότητα'"></th>
+                                    <th style="width: 15%; text-align: right;" data-bind="text:'Τιμή'"></th>
+                                    <th style="width: 15%; text-align: right;" data-bind="text:'Έκπτωση'"></th>
+                                    <th style="width: 15%; text-align: right;" data-bind="text:'Σύνολο'"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div style="flex-grow: 2; flex-basis:100%;overflow-y: auto;">
+                            <table class="table table-striped" style="margin-bottom: 1%;">
+                                <tbody data-bind="foreach: Details">
+                                    <tr>
+                                        <td style="width: 32%; line-height: 100%; font-size: 12px;" data-bind="text: Description + (ProductCode != null ? ' (' + ProductCode + ')' : '')"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: Qnt"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: Price.toFixed(2)"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: Discount != 0 ? '-' + Discount.toFixed(2) : ''"></td>
+                                        <td style="width: 17%; text-align: right; font-weight: bold;" data-bind="text: Total.toFixed(2) + '€'"></td>
+                                    </tr>
+                                    <!-- ko if: ItemRemark != null -->
+                                    <tr>
+                                        <td style="width: 32%; text-align: left; font-size: 11px; padding-left: 5%; color: green;" data-bind="text: ItemRemark"></td>
+                                        <td style="width: 17%; text-align: right;"></td>
+                                        <td style="width: 17%; text-align: right;"></td>
+                                        <td style="width: 17%; text-align: right;"></td>
+                                        <td style="width: 17%; text-align: right;"></td>
+                                    </tr>
+                                    <!-- /ko -->
+                                    <!-- ko foreach: Extras -->
+                                    <tr>
+                                        <td style="width: 32%; line-height: 100%; font-size: 12px; padding-left: 5%;" data-bind="text: Description + (ExtraCode != null ? ' (' + ExtraCode + ')' : '')"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: (Qnt == -1 ? 'χωρίς' : Qnt)"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: Price.toFixed(2)"></td>
+                                        <td style="width: 17%; text-align: right;" data-bind="text: ''"></td>
+                                        <td style="width: 17%; text-align: right; font-weight: bold;" data-bind="text: ($parent.Qnt * Qnt * Price).toFixed(2) + '€'"></td>
+                                    </tr>
+                                    <!-- /ko -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <table id="ODtFoot" class="table" style="margin-bottom: 0px;flex-basis: 10%;flex-grow: 1;">
+                            <tbody>
+                                <!-- ko if: Discount != 0 -->
+                                <tr>
+                                    <th data-bind="text:'Έκπτωση'"></th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th style="text-align: right;" data-bind="text: '-' + Discount.toFixed(2) + '€'"></th>
+                                </tr>
+                                <!-- /ko -->
+                                <tr>
+                                    <th data-bind="text:'Σύνολο'"></th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th style="text-align: right;" data-bind="text: Total.toFixed(2) + '€'"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-flex-row">
+                    <div class="custom-flex-30"></div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <div class="custom-flex-center buttonOK" data-bind="click: $root.CloseReceiptHandling">OK</div>
+                    </div>
+                    <div class="custom-flex-20 custom-flex-center">
+                        <div class="custom-flex-center buttonDownload" data-bind="click: $root.DownloadOrder">Download</div>
+                    </div>
+                    <div class="custom-flex-30"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Handle Status Modal *@
+<div class="modal" id="StatusHandlingModal">
+    <div class="modal-dialog" style="width:50vw; min-height:60vh;">
+        <div class="modal-content">
+            <div class="modal-header custom-flex-row">
+                <div class="custom-flex-97"><span data-bind="text: 'Ιστορικό Καταστάσεων Παραγγελίας'"></span>&nbsp;<strong data-bind="text: ($root.selectedOrder() != null) ? '#'+$root.selectedOrder().Id :''"></strong></div>
+                <button type="button" class="state-button-modal custom-flex-3 custom-flex-center" data-dismiss="modal" aria-hidden="true"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body" style="min-height:60vh; max-height:60vh; overflow: hidden;">
+                <div style="display:flex;align-items:stretch;position: absolute; height:100%; width:100%; padding:15px;top: 0;left: 0;overflow: hidden;" data-bind="if: $root.receiptLoading() == false">
+                    <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;">
+                        <!-- ko if: $root.selectedStatusHist() != null -->
+                        <div class="custom-full-height custom-flex-column">
+                            <div class="custom-flex-10">
+                                <div class="custom-full-width custom-flex-row supervisors-orders-header">
+                                    <div class="custom-flex-50 custom-flex-start custom-text-black custom-text-bold custom-text-medium-large">Κατάσταση</div>
+                                    <div class="custom-flex-50 custom-flex-center custom-text-black custom-text-bold custom-text-medium-large">Ημερομηνία Μεταβολής Κατάστασης</div>
+                                </div>
+                            </div>
+                            <div class="custom-flex-90 custom-flex-column">
+                                <div class="custom-flex-83 custom-flex-column" id="scrollbar-style" data-bind="foreach: $root.selectedStatusHist()">
+                                    <div>
+                                        <div class="custom-flex-row customer-orders-order">
+                                            <!-- ko if:  Status == -2 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Όλες',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == -1 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Ανοικτή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 0 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Νέα',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 1 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Κουζίνα',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 3 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Έτοιμη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 4 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Καθ΄οδόν',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 5 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Ακυρωμένη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 6 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Κλεισμένη',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 7 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Επιστροφή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+                                            <!-- ko if:  Status == 11 -->
+                                            <div class="custom-flex-50 custom-flex-start custom-text-medium badge" data-bind="text: 'Σε αναμονή',  click: function () { $root.OpenStatusHandling($data,$data) }, style:{ 'background-color' : $root.getStateColor(Status) }" style="cursor: pointer"></div>
+                                            <!-- /ko -->
+
+                                            <div class="custom-flex-50 custom-flex-center custom-text-black custom-text-medium custom-text-bold" data-bind="text: moment.utc(StatusDate).format('YYYY-MM-DD HH:mm')"></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-flex-center">
+                    <div class="custom-flex-center custom-full-height" style="width: 60%;">
+                        <div class="buttonOK" data-bind="click: $root.CloseStatusHandling.bind()">OK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Handle ErrorMessage Modal *@
+<div class="modal" id="ErrorMessageModal">
+    <div class="modal-dialog" style="width:40vw; min-height:50vh;">
+        <div class="modal-content">
+            <div class="modal-header custom-flex-row">
+                <div class="custom-flex-97"><span data-bind="text: 'Σφάλματα στη Παραγγελία'"></span>&nbsp;<strong data-bind="text: ($root.selectedOrder() != null) ? '#'+$root.selectedOrder().Id :''"></strong></div>
+                <button type="button" class="state-button-modal custom-flex-3 custom-flex-center" data-dismiss="modal" aria-hidden="true"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body" style="min-height:60vh; max-height:60vh; overflow: hidden;">
+                <div style="display:flex;align-items:stretch;position: absolute; height:100%; width:100%; padding:15px;top: 0;left: 0;overflow: hidden;" data-bind="if: $root.receiptLoading() == false">
+                    <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;">
+                        <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;" data-bind="with: $root.selectedOrder()">
+                            <h4 style="font-weight: bolder;" data-bind="text: ErrorMessage"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-flex-center">
+                    <div class="custom-flex-center custom-full-height" style="width: 60%;">
+                        <div class="buttonOK" data-bind="click: $root.CloseErrorMessage.bind()">OK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Handle LogicErrors Modal *@
+<div class="modal" id="LogicErrorsModal">
+    <div class="modal-dialog" style="width:40vw; min-height:50vh;">
+        <div class="modal-content">
+            <div class="modal-header custom-flex-row">
+                <div class="custom-flex-97"><span data-bind="text: 'Σφάλματα Λογικής στη Παραγγελία'"></span>&nbsp;<strong data-bind="text: ($root.selectedOrder() != null) ? '#'+$root.selectedOrder().Id :''"></strong></div>
+                <button type="button" class="state-button-modal custom-flex-3 custom-flex-center" data-dismiss="modal" aria-hidden="true"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body" style="min-height:60vh; max-height:60vh; overflow: hidden;">
+                <div style="display:flex;align-items:stretch;position: absolute; height:100%; width:100%; padding:15px;top: 0;left: 0;overflow: hidden;" data-bind="if: $root.receiptLoading() == false">
+                    <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;">
+                        <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;" data-bind="with: $root.selectedOrder()">
+                            <h4 style="font-weight: bolder;" data-bind="text: LogicErrors"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-flex-center">
+                    <div class="custom-flex-center custom-full-height" style="width: 60%;">
+                        <div class="buttonOK" data-bind="click: $root.CloseLogicErrors.bind()">OK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Handle Notes Modal *@
+<div class="modal" id="NotesModal">
+    <div class="modal-dialog" style="width:40vw; min-height:50vh;">
+        <div class="modal-content">
+            <div class="modal-header custom-flex-row">
+                <div class="custom-flex-97"><span data-bind="text: 'Σχόλια για τη Παραγγελία'"></span>&nbsp;<strong data-bind="text: ($root.selectedOrder() != null) ? '#'+$root.selectedOrder().Id :''"></strong></div>
+                <button type="button" class="state-button-modal custom-flex-3 custom-flex-center" data-dismiss="modal" aria-hidden="true"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body" style="min-height:60vh; max-height:60vh; overflow: hidden;">
+                <div style="display:flex;align-items:stretch;position: absolute; height:100%; width:100%; padding:15px;top: 0;left: 0;overflow: hidden;" data-bind="if: $root.receiptLoading() == false">
+                    <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;">
+                        <div style="background-color: #fffcbe; padding: 10px; flex-basis: 50%; flex-grow: 1;" data-bind="with: $root.selectedOrder()">
+                            <h4 style="font-weight: bolder;" data-bind="text: Notes"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="custom-flex-center">
+                    <div class="custom-flex-center custom-full-height" style="width: 60%;">
+                        <div class="buttonOK" data-bind="click: $root.CloseNotes.bind()">OK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <!-- Basic includes -->
+    <script src="~/Scripts/Display/SupervisorViewModel.js"></script>
+    <!-- Modules includes -->
+    <script src="~/Scripts/Modules/communication-module.js"></script>
+    <script src="~/Scripts/Modules/keyboard-module.js"></script>
+    <script src="~/Scripts/Modules/navigation-module.js"></script>
+    <script src="~/Scripts/Modules/pagination-module.js"></script>
+    <script src="~/Scripts/Modules/signal-r-module.js"></script>
+    <!-- Models includes -->
+    <script src="~/Scripts/Models/PaginationModels.js"></script>
+    <script src="~/Scripts/Models/SignalRModels.js"></script>
+    <script src="~/Scripts/Models/StaffModels.js"></script>
+    <!-- Enumerators includes -->
+    <script src="~/Scripts/Enumerators/Communication.js"></script>
+    <script src="~/Scripts/Enumerators/Keyboard.js"></script>
+    <script src="~/Scripts/Enumerators/Navigation.js"></script>
+    <script src="~/Scripts/Enumerators/Pagination.js"></script>
+    <script src="~/Scripts/Enumerators/SignalR.js"></script>
+    <script src="~/Scripts/Enumerators/Order.js"></script>
+    <script type="text/javascript">
+        var vm = null;
+        var languageInitialized = setInterval(function () {
+            if (language.Initialized()) {
+                clearInterval(languageInitialized);
+                vm = new SupervisorViewModel();
+                ko.applyBindings(vm);
+                vm.CheckVersionCompatibility();
+                $(document).ready(function () {
+                    $("body").keyup(function (e) {
+                        if (e.keyCode == 10) { // Control + Enter
+                        }
+                        else if (e.keyCode == 13) { // Enter & Shift + Enter
+                        }
+                        else {
+                        }
+                    });
+                });
+            }
+        }, 100);
+        function tabRowSelect(item) { AAdetailsCounter = 0; if (item == undefined) return; $(item).addClass('selected').siblings().removeClass('selected'); }
+    </script>
+}

@@ -1,0 +1,13 @@
+﻿.greece-flag-logo {
+    background-image: url('../Images/Flags/Greece.png');
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+}
+
+.united-kingdom-flag-logo {
+    background-image: url('../Images/Flags/United Kingdom(Great Britain).png');
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+}

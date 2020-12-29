@@ -1,0 +1,434 @@
+﻿.custom-body {
+    height: 88vh;
+}
+
+.custom-header {
+    background-color: #DFE3E4;
+}
+
+.hit-logo {
+    background-image: url('../Images/HIT LOGOS gray.png');
+    background-repeat: no-repeat;
+    width: 86px;
+    height: 25px;
+}
+
+.custom-header-phone-text {
+    padding-left: 5%;
+}
+
+.custom-header-user-text {
+    padding-left: 5%;
+}
+
+.custom-header-notification {
+    width: 70%;
+    height: 80%;
+}
+
+.custom-header-navigation {
+    color: white;
+    cursor: pointer;
+}
+
+.customer-container {
+    background-color: #F3F3F3;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.customer-buttons-container {
+    background-color: #8DB6F3;
+}
+
+.customer-search-container {
+    background-color: #8DB6F3;
+    border: 2px solid #979797;
+    border-radius: 20px;
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.entity-input {
+    width: 90%;
+    height: 80%;
+}
+
+.entity-clear {
+    width: 75%;
+    height: 65%;
+}
+
+.entity-search {
+    width: 75%;
+    height: 65%;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.entity-customer-description {
+    text-align: start;
+}
+
+.entity-address-description {
+    text-align: start;
+}
+
+.entity-phone-description {
+    text-align: start;
+}
+
+.entity-customer-select-button {
+    width: 80%;
+    height: 90%;
+}
+
+.customer-divider {
+    border-bottom: 1px solid #C4C4C4;
+    width: 100%;
+}
+
+.customer-options-customer {
+    padding: 0.5% 1%;
+}
+
+.customer-options-customer-templates {
+    overflow-y: hidden;
+}
+
+.customer-options-container {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.customer-options-tab {
+    border: 1px solid transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: 0.5%;
+    margin: 0% 0.1%;
+    background-color: #D0D6D7;
+}
+
+.customer-options-tab-selected {
+    background-color: #FFFFFF;
+}
+
+.customer-orders-detail {
+    border-bottom: 1px dotted #C4C4C4;
+    padding: 0% 2%;
+    margin: 0.5% 0%;
+}
+
+.customer-edit-button {
+    width: 75%;
+    height: 95%;
+}
+
+.loyalty-points-button {
+    width: 75%;
+    height: 95%;
+}
+
+.loyalty-code-input {
+    width: 90%;
+    height: 95%;
+}
+
+.address-map-button {
+    width: 20%;
+    height: 25%;
+}
+
+.customer-details-header {
+    border-bottom: 2px solid #C4C4C4;
+    padding: 0% 2%;
+    margin: 1.5% 0%;
+}
+
+.customer-details-detail {
+    border-bottom: 1px dotted #C4C4C4;
+    padding: 0% 2%;
+    margin: 0.5% 0%;
+}
+
+.customer-details-options-button {
+    width: 50%;
+    height: 70%;
+}
+
+.customer-orders-header {
+    margin: 0.5%;
+    padding: 1%;
+}
+
+.customer-orders-order {
+    min-height: 50px;
+    margin: 0.5%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+    padding: 0.5%;
+}
+
+.customer-actions-button {
+    width: 40%;
+    height: 60%;
+}
+
+.customer-orders-multitude {
+    width: 75%;
+    height: 65%;
+}
+
+.customer-order-button {
+    width: 80%;
+    height: 90%;
+}
+
+.customer-message-selection {
+    padding: 1% 2%;
+}
+
+.customer-message-selection-container {
+    position: relative;
+}
+
+.customer-message-selection-button {
+    width: 85%;
+    height: 80%;
+}
+
+.customer-message-message-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}
+
+.customer-message-customer-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}
+
+.customer-message-cancel-selection-button {
+    width: 70%;
+    height: 80%;
+}
+
+.customer-message-options-button {
+    width: 50%;
+    height: 70%;
+}
+
+.customer-complaints-modal-complaint {
+    padding: 0% 5%;
+}
+
+.customer-complaints-modal-complaint-input {
+    width: 90%;
+    height: 80% !important;
+    resize: none;
+}
+
+.selected-order-body {
+    overflow: hidden;
+}
+
+.selected-order-header {
+    width: 50%;
+    padding: 1%;
+    border-bottom: 1px dotted #C4C4C4;
+}
+
+.selected-order-details-container {
+    background-color: #FBE2BC;
+}
+
+.selected-order-discount-container {
+    background-color: #FBE2BC;
+    padding: 0% 3%;
+}
+
+.selected-order-detail-container {
+    margin: 0% 2%;
+    padding: 1%;
+    border-bottom: 1px groove #BfBfB7;
+}
+
+.selected-order-info-container {
+    padding: 0.5% 3%;
+}
+
+.password-confirmation-input {
+    width: 90% !important;
+    height: 80% !important;
+}
+
+.password-confirmation-keyboard {
+    width: 70%;
+    height: 75%;
+}
+
+.customer-messages-header {
+    margin: 0.5%;
+    padding: 1%;
+}
+
+.customer-messages-button {
+    width: 80%;
+    height: 90%;
+}
+
+.edit-customer-message-container {
+    padding: 1%;
+}
+
+.edit-customer-message-selection-container {
+    position: relative;
+}
+
+.edit-customer-message-selection-button {
+    width: 90%;
+    height: 80%;
+}
+
+.edit-customer-message-cancel-selection-button {
+    width: 55%;
+    height: 55%;
+}
+
+.edit-customer-message-message-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}
+
+.edit-customer-message-customer-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}
+
+.insert-options {
+    padding: 0.5% 2%;
+}
+
+.insert-options-container {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.insert-options-tab {
+    border: 1px solid transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: 0.5%;
+    margin: 0% 0.1%;
+    background-color: #D0D6D7;
+}
+
+.insert-options-tab-selected {
+    background-color: #FFFFFF;
+}
+
+.insert-customer {
+    padding: 1%;
+}
+
+.insert-customer-input {
+    width: 100%;
+    height: 80%;
+}
+
+.insert-customer-edit-button {
+    width: 50%;
+    height: 75%;
+}
+
+.insert-customer-divider {
+    width: 100%;
+    opacity: 0.9;
+    border: 1px solid #A2A2A2;
+}
+
+.insert-customer-action-button {
+    width: 70%;
+    height: 75%;
+}
+
+.insert-address {
+    padding: 1%;
+}
+
+.insert-address-input {
+    width: 100%;
+    height: 80%;
+}
+
+.insert-address-label {
+    width: 100%;
+    height: 80%;
+}
+
+.insert-address-map-button {
+    width: 65%;
+    height: 75%;
+}
+
+.refresh-address-map-button {
+    width: 65%;
+    height: 75%;
+}
+
+.insert-address-action-button {
+    width: 70%;
+    height: 75%;
+}
+
+.insert-address-save-button {
+    width: 70%;
+    height: 75%;
+}
+
+.addresses-address-container {
+    padding: 2%;
+}
+
+.addresses-address-address {
+    height: 37px;
+    margin: 0.4% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px 0 0 5px;
+}
+
+.addresses-address-address-button {
+    width: 90%;
+    height: 85%;
+}
+
+.addresses-coordinates-container {
+    padding: 2%;
+}
+
+.addresses-coordinates-address {
+    height: 37px;
+    margin: 0.4% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px 0 0 5px;
+}
+
+.addresses-coordinates-address-button {
+    width: 90%;
+    height: 85%;
+}

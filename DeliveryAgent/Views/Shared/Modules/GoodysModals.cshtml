@@ -1,0 +1,280 @@
+﻿<div id="goodysLoyaltyCustomerInfo" class="custom-panel custom-panel-small custom-panel-bottom-left custom-cursor loyalty-goodys-panel" data-bind="with: $root.loyaltyGoodys">
+    <div class="custom-panel-head custom-panel-info ">
+        <div class="custom-flex-row loyalty-goodys-header-container">
+            <div class="custom-flex-15 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-goodys-header-button" data-toggle="collapse" data-target="#loyalty-goodys-gifts" tabindex="-1"><i class="fa fa-gifts custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-25 custom-flex-start custom-text-white custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysLoyaltyGiftCardsColon', null) + ' ' + giftCards()"></div>
+            <div class="custom-flex-30 custom-flex-center">
+                <input class="custom-input loyalty-goodys-header-input" id="loyaltyId" data-bind="value: loyaltyIdInput, click: $root.keyboard.InitializeKeyboard.bind($data, $data, 'loyaltyIdInput', 'loyaltyId', 'loyaltyId', GetLoyaltyPointsByOtherPhone, null, keyboardTypesEnum.Numeric), clickBubble: false, attr: { 'placeholder' : language.Translate('Mobile', null)}, visible: allowApplyCoupon" type="text" autocomplete="off" tabindex="-1" />
+            </div>
+            <div class="custom-flex-15 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-goodys-header-button" data-bind="click: GetLoyaltyPointsByOtherPhone, clickBubble: false, visible: allowApplyCoupon" tabindex="-1"><i class="fa fa-search custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-15 custom-flex-center">
+                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold loyalty-goodys-header-button" data-bind="click: HideLoyaltyInformation, clickBubble: false" tabindex="-1"><i class="fa fa-times custom-fa-faint"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-panel-body" data-bind="with: loyaltyInfo">
+        <div class="custom-flex-column">
+            <div class="custom-flex-25 custom-flex-row">
+                <div class="custom-flex-60 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysLoyaltyNameColon', null)"></div>
+                <div class="custom-flex-40 custom-flex-end custom-text-black" data-bind="text: Name + ' ' + Surname"></div>
+            </div>
+            <div class="custom-flex-25 custom-flex-row">
+                <div class="custom-flex-60 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysLoyaltyLoyaltyIdColon', null)"></div>
+                <div class="custom-flex-40 custom-flex-end custom-text-black" data-bind="text: LoyaltyId"></div>
+            </div>
+            <div class="custom-flex-25 custom-flex-row">
+                <div class="custom-flex-60 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysLoyaltyAvailableStarsColon', null)"></div>
+                <div class="custom-flex-40 custom-flex-end custom-text-black" data-bind="text: Points"></div>
+            </div>
+            <div class="custom-flex-25 custom-flex-row">
+                <div class="custom-flex-60 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysLoyaltyRemainingStarsColon', null)"></div>
+                <div class="custom-flex-40 custom-flex-end custom-text-black" data-bind="text: Remainder"></div>
+            </div>
+        </div>
+        <div class="collapse loyalty-goodys-all-coupons" id="loyalty-goodys-gifts">
+            <div data-bind="foreach: AvailableCouponList">
+                <div>
+                    <div class="custom-flex-row loyalty-goodys-coupon" data-bind="css: { 'loyalty-goodys-coupon-invalid' : !IsValid, 'loyalty-goodys-coupon-applied' : CouponApplied() }">
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-extra-extra-small">
+                            <i class="fa fa-circle custom-fa-faint"></i>
+                        </div>
+                        <div class="custom-flex-85">
+                            <div class="custom-flex-column">
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: CouponDescription + ' (' + CouponCode + ')'"></div>
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyValidUntilColon', null) + ' ' + ExpirationDate"></div>
+                            </div>
+                        </div>
+                        <div class="custom-flex-10 custom-flex-center">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-goodys-coupon-button" data-bind="click: $parents[1].ApplyLoyaltyCoupon.bind($data, $data), clickBubble: false, visible: $parents[1].allowApplyCoupon" tabindex="-1"><i class="fa fa-gift custom-fa-faint"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-bind="foreach: DefaultCouponList">
+                <div>
+                    <div class="custom-flex-row loyalty-goodys-coupon">
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-extra-extra-small">
+                            <i class="fa fa-circle custom-fa-faint"></i>
+                        </div>
+                        <div class="custom-flex-85">
+                            <div class="custom-flex-column">
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: CouponDescription + ' (' + CouponCode + ')'"></div>
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyValidUntilColon', null) + ' ' + ExpirationDate"></div>
+                            </div>
+                        </div>
+                        <div class="custom-flex-10 custom-flex-center">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-goodys-coupon-button" data-bind="click: $parents[1].ApplyLoyaltyCoupon.bind($data, $data), clickBubble: false, visible: $parents[1].allowApplyCoupon" tabindex="-1"><i class="fa fa-gift custom-fa-faint"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-bind="foreach: PersonalizedCouponList">
+                <div>
+                    <div class="custom-flex-row loyalty-goodys-coupon">
+                        <div class="custom-flex-5 custom-flex-center custom-text-black custom-text-extra-extra-small">
+                            <i class="fa fa-circle custom-fa-faint"></i>
+                        </div>
+                        <div class="custom-flex-85">
+                            <div class="custom-flex-column">
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: CouponDescription + ' (' + CouponCode + ')'"></div>
+                                <div class="custom-flex-50 custom-flex-start custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyValidUntilColon', null) + ' ' + ExpirationDate"></div>
+                            </div>
+                        </div>
+                        <div class="custom-flex-10 custom-flex-center">
+                            <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold loyalty-goodys-coupon-button" data-bind="click: $parents[1].ApplyLoyaltyCoupon.bind($data, $data), clickBubble: false, visible: $parents[1].allowApplyCoupon" tabindex="-1"><i class="fa fa-gift custom-fa-faint"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysLoyaltyRegisterCustomer" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysLoyaltyInactiveCustomerCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center" data-bind="with: loyaltyInfo">
+            <div class="custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyInactiveCustomerMessage', { firstName: (Name != null ? Name : ''), lastName: (Surname != null ? Surname : '') })"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: RegisterLoyaltyCustomerConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: RegisterLoyaltyCustomerCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysLoyaltyActivateCustomer" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysLoyaltyPendingCustomerCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center" data-bind="with: loyaltyInfo">
+            <div class="custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyPendingExternalCustomerMessage', { firstName: (Name != null ? Name : ''), lastName: (Surname != null ? Surname : '') })"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: ActivateLoyaltyCustomerConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: ActivateLoyaltyCustomerCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysLoyaltyPendingCustomer" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysLoyaltyPendingCustomerCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center" data-bind="with: loyaltyInfo">
+            <div class="custom-text-black" data-bind="text: language.Translate('GoodysLoyaltyPendingCustomerMessage', { firstName: (Name != null ? Name : ''), lastName: (Surname != null ? Surname : '') })"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: ActivatePendingCustomer, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysValidateCoupon" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-medium custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysCouponValidationCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 custom-flex-center">
+            <div class="custom-full-width custom-full-height custom-flex-column goodys-coupon-validation-container">
+                <div class="custom-flex-15 custom-flex-row">
+                    <div class="custom-flex-30 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponCodeColon', null)"></div>
+                    <div class="custom-flex-70 custom-flex-center">
+                        <input class="custom-input goodys-coupon-input" data-bind="value: couponCode, attr: { 'placeholder' : language.Translate('Code', null)}" type="text" autocomplete="off" tabindex="-1" />
+                    </div>
+                </div>
+                <div class="custom-flex-15 custom-flex-row">
+                    <div class="custom-flex-30 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponTypeColon', null)"></div>
+                    <div class="custom-flex-10 custom-flex-center dropdown-menu-container">
+                        <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                            <i class="fa fa-caret-down custom-fa-faint"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: couponTypes">
+                            <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $parents[0].SelectCouponType.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                        </ul>
+                    </div>
+                    <div class="custom-flex-60 custom-flex-start custom-text-black" data-bind="text: couponType().Description"></div>
+                </div>
+                <div class="custom-flex-15 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold goodys-coupon-validation-button" data-bind="text: language.Translate('GoodysValidation', null), click: ValidateCoupon, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-55" data-bind="with: couponInfo">
+                    <div class="custom-full-width custom-flex-column goodys-coupon-coupon">
+                        <div class="custom-flex-15 custom-flex-center custom-text-black custom-text-bold custom-text-medium-large" data-bind="text: language.Translate('GoodysCouponInfoCaps', null)"></div>
+                        <div class="custom-flex-17 custom-flex-row">
+                            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponCampaignColon', null)"></div>
+                            <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: Campaign"></div>
+                        </div>
+                        <div class="custom-flex-17 custom-flex-row">
+                            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponNameColon', null)"></div>
+                            <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: Name"></div>
+                        </div>
+                        <div class="custom-flex-17">
+                            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponCodeColon', null)"></div>
+                            <div class="custom-flex-60 custom-flex-end custom-text-black" data-bind="text: Code"></div>
+                        </div>
+                        <div class="custom-flex-17">
+                            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponDiscountColon', null)"></div>
+                            <!-- ko if: Type == couponGoodysDiscountType.GiftCard -->
+                            <div class="custom-flex-55 custom-flex-end custom-text-black" data-bind="text: Discount"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                            <!-- /ko -->
+                            <!-- ko if: Type == couponGoodysDiscountType.Percentage -->
+                            <div class="custom-flex-55 custom-flex-end custom-text-black" data-bind="text: Discount"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black"><i class="fa fa-percent custom-fa-faint"></i></div>
+                            <!-- /ko -->
+                            <!-- ko if: Type == couponGoodysDiscountType.Absolute -->
+                            <div class="custom-flex-55 custom-flex-end custom-text-black" data-bind="text: Discount"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                            <!-- /ko -->
+                            <!-- ko if: Type == couponGoodysDiscountType.FreeItem -->
+                            <div class="custom-flex-60"></div>
+                            <!-- /ko -->
+                            <!-- ko if: Type == couponGoodysDiscountType.BuyXGetOne -->
+                            <div class="custom-flex-60"></div>
+                            <!-- /ko -->
+                        </div>
+                        <div class="custom-flex-17">
+                            <div class="custom-flex-40 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('GoodysCouponMinimumTotalColon', null)"></div>
+                            <div class="custom-flex-55 custom-flex-end custom-text-black" data-bind="text: MinimumOrderValue"></div>
+                            <div class="custom-flex-5 custom-flex-center custom-text-black"><i class="fa fa-euro-sign custom-fa-faint"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: ShowCouponValidationConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: ShowCouponValidationCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysApplyCoupon" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-large-small custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-20 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysCouponApplicationCaps', null)"></div>
+        </div>
+        <div class="custom-flex-55 custom-flex-center" data-bind="with: couponInfo">
+            <div class="custom-text-black" data-bind="text: language.Translate('GoodysCouponApplicationMessage', { code: Code })"></div>
+        </div>
+        <div class="custom-flex-25 custom-modal-footer">
+            <div class="custom-full-width custom-flex-row">
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ConfirmCaps', null), click: ShowCouponInformationConfirm, clickBubble: false" tabindex="-1"></button>
+                </div>
+                <div class="custom-flex-50 custom-flex-center">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-two" data-bind="text: language.Translate('ReturnCaps', null), click: ShowCouponInformationCancel, clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="goodysCouponSuggestedProducts" class="custom-modal" data-backdrop="static" data-keyboard="false">
+    <div class="custom-modal-medium-medium custom-flex-column" data-bind="with: $root.loyaltyGoodys">
+        <div class="custom-flex-12 custom-flex-center custom-modal-header">
+            <div class="custom-text-black custom-text-bold custom-text-extra-large" data-bind="text: language.Translate('GoodysCouponCouponProductsCaps', null)"></div>
+        </div>
+        <div class="custom-flex-74 goodys-coupon-coupon-products-body">
+            <div class="custom-full-width custom-flex-wrap goodys-coupon-coupon-products-container" id="scrollbar-style" data-bind="foreach: suggestedProducts">
+                <div class="custom-flex-center goodys-coupon-coupon-product-button-container">
+                    <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-text-small goodys-coupon-coupon-product-button" data-bind="text: Description, click: $parents[0].InsertCouponProduct.bind($data, $data), clickBubble: false" tabindex="-1"></button>
+                </div>
+            </div>
+        </div>
+        <div class="custom-flex-14 custom-modal-footer">
+            <div class="custom-full-width custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold custom-modal-footer-button-one" data-bind="text: language.Translate('OkCaps', null), click: CloseCouponProductOptions, clickBubble: false" tabindex="-1"></button>
+            </div>
+        </div>
+    </div>
+</div>

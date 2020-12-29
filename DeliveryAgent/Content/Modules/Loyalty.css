@@ -1,0 +1,92 @@
+﻿.loyalty-administrator-modal-authorization {
+    padding: 0% 5%;
+}
+
+.loyalty-administrator-modal-authorization-input {
+    width: 90% !important;
+    height: 50% !important;
+}
+
+.loyalty-administrator-modal-points {
+    padding: 0% 5%;
+}
+
+.loyalty-administrator-modal-points-input {
+    width: 90% !important;
+    height: 50% !important;
+}
+
+.loyalty-administrator-modal-description {
+    padding: 0% 5%;
+}
+
+.loyalty-administrator-modal-description-input {
+    width: 90% !important;
+    height: 50% !important;
+}
+
+.loyalty-options-body {
+    overflow: hidden;
+}
+
+.loyalty-options-container {
+    padding: 1.5%;
+}
+
+.loyalty-divider {
+    border: 1px solid #597FA0;
+    opacity: 0.3;
+}
+
+.loyalty-amount-discount-button {
+    width: 60%;
+    height: 60%;
+}
+
+.loyalty-item {
+    height: 35px;
+    margin: 0.5% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+}
+
+.loyalty-free-product-button {
+    width: 60%;
+    height: 80%;
+}
+
+.loyalty-product-options-body {
+    overflow-y: hidden;
+}
+
+.loyalty-product-options-option-header {
+    height: 30px;
+    padding: 0% 2%;
+}
+
+.loyalty-product-options-product-button-container {
+    width: 20%;
+    height: 70px;
+}
+
+.loyalty-product-options-product-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.loyalty-product-options-inserted-products-container {
+    padding: 0% 2%;
+}
+
+.loyalty-product-options-inserted-product {
+    height: 30px;
+    margin: 0.5% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+}
+
+.loyalty-product-options-inserted-product-button {
+    width: 60%;
+    height: 90%;
+}

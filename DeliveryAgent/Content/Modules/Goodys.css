@@ -1,0 +1,83 @@
+﻿.loyalty-goodys-panel {
+    width: 30%;
+    height: auto;
+    top: 65%;
+    left: 65%;
+}
+
+.loyalty-goodys-header-container {
+    height: 40px;
+}
+
+.loyalty-goodys-header-button {
+    width: 60%;
+    height: 90%;
+}
+
+.loyalty-goodys-header-input {
+    width: 90% !important;
+    height: 80% !important;
+}
+
+.loyalty-goodys-all-coupons {
+    margin-top: 5%;
+    max-height: 20vh;
+    overflow-y: auto;
+}
+
+.loyalty-goodys-coupon {
+    margin: 1% 0%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+}
+
+.loyalty-goodys-coupon-invalid {
+    background-image: linear-gradient(-180deg, rgba(255, 0, 0, 0.53) 0%, rgba(255, 0, 0, 0.68) 100%) !important;
+}
+
+.loyalty-goodys-coupon-applied {
+    background-image: linear-gradient(-180deg, rgba(0, 255, 0, 0.53) 0%, rgba(0, 255, 0, 0.68) 100%) !important;
+}
+
+.loyalty-goodys-coupon-button {
+    width: 85%;
+    height: 75%;
+}
+
+.goodys-coupon-validation-container {
+    padding: 2%;
+}
+
+.goodys-coupon-input {
+    width: 100%;
+    height: 80%;
+}
+
+.goodys-coupon-validation-button {
+    width: 40%;
+    height: 80%;
+}
+
+.goodys-coupon-coupon {
+    padding: 1%;
+}
+
+.goodys-coupon-coupon-products-body {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.goodys-coupon-coupon-products-container {
+    height: 100% !important;
+}
+
+.goodys-coupon-coupon-product-button-container {
+    width: 20%;
+    height: 70px;
+}
+
+.goodys-coupon-coupon-product-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}

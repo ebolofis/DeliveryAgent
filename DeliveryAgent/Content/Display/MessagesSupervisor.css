@@ -1,0 +1,235 @@
+﻿.custom-footer-main {
+    height: 0vh !important;
+}
+
+.custom-body {
+    height: 96vh;
+}
+
+.custom-header {
+    background-color: #DFE3E4;
+}
+
+.hit-logo {
+    background-image: url('../Images/HIT LOGOS gray.png');
+    background-repeat: no-repeat;
+    width: 86px;
+    height: 25px;
+}
+
+.custom-header-phone-text {
+    padding-left: 5%;
+}
+
+.custom-header-user-text {
+    padding-left: 5%;
+}
+
+.custom-header-notification {
+    width: 70%;
+    height: 80%;
+}
+
+.custom-header-navigation {
+    color: white;
+    cursor: pointer;
+}
+
+.messages-supervisor-container {
+    background-color: #F3F3F3;
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.messages-supervisor-filters {
+    margin: 0% 0.5%;
+    background-color: rgba(196, 196, 196, 0.45);
+    border: 1px solid #C4C4C4;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 0.3%;
+}
+
+.messages-supervisor-header {
+    margin: 0% 0.5%;
+    background-color: rgba(196, 196, 196, 0.45);
+    border: 1px solid #C4C4C4;
+    padding: 0.3%;
+}
+
+.messages-supervisor-filter-button {
+    width: 70%;
+    height: 80%;
+}
+
+.messages-supervisor-action-button {
+    width: 70%;
+    height: 80%;
+}
+
+.messages-supervisor-sort-container {
+    width: 85%;
+    background-color: #F3F3F3;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.messages-supervisor-body {
+    overflow-y: hidden;
+}
+
+.messages-supervisor-edit-message-button {
+    width: 60%;
+    height: 90%;
+}
+
+.messages-supervisor-multitude-button {
+    width: 70%;
+    height: 70%;
+}
+
+.messages-supervisor-store-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-store-filters-stores {
+    height: 100% !important;
+}
+
+.messages-supervisor-store-filters-store-container {
+    width: 25%;
+    height: 70px;
+}
+
+.messages-supervisor-store-filters-store-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.messages-supervisor-staff-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-staff-filters-staff {
+    height: 100% !important;
+}
+
+.messages-supervisor-staff-filters-staff-container {
+    width: 25%;
+    height: 70px;
+}
+
+.messages-supervisor-staff-filters-staff-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.messages-supervisor-creation-date-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-creation-date-filters-picker-label {
+    width: 90%;
+    height: 80%;
+}
+
+.messages-supervisor-creation-date-filters-picker-button {
+    width: 60%;
+    height: 80%;
+}
+
+.messages-supervisor-reason-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-reason-filters-reasons {
+    height: 100% !important;
+}
+
+.messages-supervisor-reason-filters-reason-container {
+    width: 25%;
+    height: 70px;
+}
+
+.messages-supervisor-reason-filters-reason-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.messages-supervisor-message-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-message-filters-messages {
+    height: 100% !important;
+}
+
+.messages-supervisor-message-filters-message-container {
+    width: 25%;
+    height: 70px;
+}
+
+.messages-supervisor-message-filters-message-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.messages-supervisor-status-filters-container {
+    padding: 1%;
+    overflow-y: auto;
+}
+
+.messages-supervisor-status-filters-statuses {
+    height: 100% !important;
+}
+
+.messages-supervisor-status-filters-status-container {
+    width: 25%;
+    height: 70px;
+}
+
+.messages-supervisor-status-filters-status-button {
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.messages-supervisor-edit-message-container {
+    padding: 1%;
+}
+
+.messages-supervisor-edit-message-selection-container {
+    position: relative;
+}
+
+.messages-supervisor-edit-message-selection-button {
+    width: 90%;
+    height: 80%;
+}
+
+.messages-supervisor-edit-message-cancel-selection-button {
+    width: 55%;
+    height: 55%;
+}
+
+.messages-supervisor-edit-message-message-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}
+
+.messages-supervisor-edit-message-customer-description-input {
+    width: 90%;
+    height: 90% !important;
+    resize: none;
+}

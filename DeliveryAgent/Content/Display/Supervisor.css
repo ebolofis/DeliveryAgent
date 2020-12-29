@@ -1,0 +1,185 @@
+﻿.custom-footer-main {
+    height: 0vh !important;
+}
+
+.custom-body {
+    height: 96vh !important;
+}
+
+.custom-header {
+    background: #DFE3E4;
+}
+
+.hit-logo {
+    background-image: url('../Images/HIT LOGOS gray.png');
+    background-repeat: no-repeat;
+    width: 86px;
+    height: 25px;
+}
+
+.custom-header-phone-text {
+    padding-left: 5%;
+}
+
+.custom-header-user-text {
+    padding-left: 5%;
+}
+
+.custom-header-notification {
+    width: 70%;
+    height: 80%;
+}
+
+.custom-header-navigation {
+    color: white;
+    cursor: pointer;
+}
+
+.custom-header-search-product-input {
+    width: 90% !important;
+    height: 80% !important;
+    background: #DFE3E4 !important;
+}
+
+.custom-header-search-product-keyboard {
+    width: 70%;
+    height: 65%;
+}
+
+.DaOrders-orders-order {
+    margin: 0.1%;
+    border: 1px solid darkblue;
+    border-radius: 5px;
+    padding: 0.5% 0.2%;
+}
+
+.buttonOK {
+    width: 60%;
+    height: 50px;
+    font-size: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+}
+
+.buttonDownload {
+    width: 60%;
+    height: 50px;
+    font-size: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+}
+
+.state-button-modal {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+    border: none;
+    line-height: 40px;
+    text-align: center;
+    margin: 1px 5px;
+    background-color: rgba(255, 0, 0, 0);
+    right: 0;
+}
+
+.modal-header {
+    min-height: 16.428571429px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+    .modal-header .close {
+        margin-top: -2px;
+    }
+
+.modal-title {
+    margin: 0;
+    line-height: 1.428571429;
+}
+
+.modal-body {
+    position: relative;
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 19px 20px 20px;
+    margin-top: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+
+.modal-header {
+    display: flex;
+    color: white;
+    align-items: center;
+    background-image: -moz-linear-gradient(top, #505050, #000);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#505050), to(#000));
+    background-image: -webkit-linear-gradient(top, #505050, #000);
+    background-image: -o-linear-gradient(top, #505050, #000);
+    background-image: linear-gradient(to bottom, #505050 0%, #000 80%);
+}
+
+    .modal-header > button {
+        order: 2;
+        opacity: 1;
+        color: white;
+    }
+
+    .modal-header > div {
+        font-size: x-large;
+    }
+
+    .modal-header > button > i {
+        font-size: 25px;
+    }
+
+.state-button-modal {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+    border: none;
+    line-height: 40px;
+    text-align: center;
+    margin: 1px 5px;
+    background-color: rgba(255, 0, 0, 0);
+    right: 0;
+}
+
+.supervisors-orders-header {
+    margin: 0.5%;
+    background: #ddd;
+}
+
+.badge {
+    max-height: 18px;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10px;
+}
+
+.supervisor-refresh-orders-button {
+    width: 75%;
+    height: 65%;
+}

@@ -1,0 +1,11 @@
+﻿.pagination-entity-list-entity {
+    min-height: 50px;
+    margin: 0.5%;
+    border: 1px solid #C4C4C4;
+    border-radius: 5px;
+    padding: 0.5%;
+}
+
+.pagination-pagination {
+    margin: 0px;
+}

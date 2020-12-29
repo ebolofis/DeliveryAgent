@@ -1,0 +1,294 @@
+﻿<script type="text/html" id="customer-insert-template">
+    <div class="custom-full-height custom-flex-column insert-options">
+        <div class="custom-flex-8">
+            <ul class="custom-full-width custom-flex-row insert-options-container" data-bind="foreach: $root.customerInsertOptions">
+                <li class="custom-flex-100 custom-flex-center custom-text-black custom-text-bold custom-text-large insert-options-tab" data-bind="text: Description, click: $root.SelectInsertTab.bind($data, $data), clickbubble: false, css: { 'insert-options-tab-selected' : $root.customerInsertTab() == $data }"></li>
+            </ul>
+        </div>
+        <div class="custom-flex-92">
+            <!-- ko if: $root.customerInsertTab().Field == 'Customer'-->
+            <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-insert-tab-customer-template' }"></div>
+            <!-- /ko -->
+            <!-- ko if: $root.customerInsertTab().Field == 'Address'-->
+            <div class="custom-full-width custom-full-height" data-bind="template: { name: 'customer-insert-tab-address-template' }"></div>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-insert-tab-customer-template">
+    <div class="custom-full-height custom-flex-column insert-customer" data-bind="with: $root.newCustomer">
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('FirstNameColon', null)"></div>
+            <div class="custom-flex-38 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: FirstName, attr: { 'placeholder' : language.Translate('FirstName', null)}" type="text" autocomplete="off" tabindex="1" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-7 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('EMailColon', null)"></div>
+            <div class="custom-flex-25 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Email, attr: { 'placeholder' : language.Translate('EMail', null)}" type="email" autocomplete="off" tabindex="3" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SendEMailColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center">
+                <input class="custom-checkbox" data-bind="checked: SendEmail" type="checkbox" tabindex="-1" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LastNameColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-38 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: LastName, attr: { 'placeholder' : language.Translate('LastName', null)}" type="text" autocomplete="off" tabindex="2" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AnonymityColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center">
+                <input class="custom-checkbox" data-bind="checked: Anonymous" type="checkbox" tabindex="-1" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <!-- ko if: $root.activeLoyalty() == loyaltyTypeEnum.Hit -->
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LoyaltyColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center">
+                <input class="custom-checkbox" data-bind="checked: Loyalty" type="checkbox" tabindex="-1" />
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $root.activeLoyalty() != loyaltyTypeEnum.Hit -->
+            <div class="custom-flex-15"></div>
+            <!-- /ko -->
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SendSMSColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center">
+                <input class="custom-checkbox" data-bind="checked: SendSms" type="checkbox" tabindex="-1" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('PhoneColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Phone1, attr: { 'placeholder' : language.Translate('Phone', null)}" type="text" autocomplete="off" tabindex="4" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('MobileColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Mobile, attr: { 'placeholder' : language.Translate('Mobile', null)}" type="text" autocomplete="off" tabindex="5" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('OtherColon', null)"></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Phone2, attr: { 'placeholder' : language.Translate('Phone', null)}" type="text" autocomplete="off" tabindex="6" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CustomerNoteColon', null)"></div>
+            <div class="custom-flex-38 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Notes, attr: { 'placeholder' : language.Translate('Comment', null)}" type="text" autocomplete="off" tabindex="7" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('SecretNoteColon', null)"></div>
+            <div class="custom-flex-38 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: SecretNotes, attr: { 'placeholder' : language.Translate('Comment', null)}" type="text" autocomplete="off" tabindex="8" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressesColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-medium" id="scrollbar-style" data-bind="foreach: Addresses">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectInsertedAddress.bind($data, $data) }"><span data-bind="text: $root.customerAddressTypeOptions()[AddressType] + ' - ' + AddressStreet + ' ' + AddressNumber + (Area != null && Area != '' ? ', ' + Area : '')"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-74 custom-flex-start custom-text-black" data-bind="text: SelectedAddress != null ? $root.customerAddressTypeOptions()[SelectedAddress.AddressType] + ' - ' + SelectedAddress.City + ' - ' + SelectedAddress.AddressStreet + ' ' + SelectedAddress.AddressNumber + (SelectedAddress.Area != null && SelectedAddress.Area != '' ? ', ' + SelectedAddress.Area : '') : ''"></div>
+            <div class="custom-flex-10 custom-flex-center">
+                <button class="custom-default-button custom-default-button-simple custom-flex-center custom-text-black custom-text-bold insert-customer-edit-button" data-bind="click: $root.EditSelectedAddress, clickBubble: false" tabindex="-1"><i class="fa fa-edit custom-fa-faint"></i></button>
+            </div>
+        </div>
+        <div class="custom-flex-4 custom-flex-row">
+            <div class="custom-flex-100 custom-flex-end custom-text-black custom-text-small" data-bind="text: language.Translate('CustomerPasswordMessage', null)"></div>
+        </div>
+        <div class="custom-flex-2 custom-flex-center">
+            <div class="insert-customer-divider"></div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyNameColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-45 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: JobName, attr: { 'placeholder' : language.Translate('CompanyName', null)}" type="text" autocomplete="off" tabindex="9" />
+            </div>
+            <div class="custom-flex-10"></div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CompanyPhoneColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: CompanyPhone, attr: { 'placeholder' : language.Translate('Phone', null)}" type="text" autocomplete="off" tabindex="10" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ProfessionColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-29 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: Profession, attr: { 'placeholder' : language.Translate('Profession', null)}" type="text" autocomplete="off" tabindex="11" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-5 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxNumberColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: TaxNumber, attr: { 'placeholder' : language.Translate('TaxNumber', null)}" type="number" autocomplete="off" tabindex="12" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-5 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('TaxOfficeColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-orange custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-customer-input" data-bind="value: TaxOffice, attr: { 'placeholder' : language.Translate('TaxOffice', null)}" type="text" autocomplete="off" tabindex="13" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('BillingAddressColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" id="scrollbar-style" data-bind="foreach: Addresses">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectInsertedBillingAddress.bind($data, $data) }, visible: AddressType == 1"><span data-bind="text: AddressStreet + ' ' + AddressNumber + (Area != null && Area != '' ? ', ' + Area : '')"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-80 custom-flex-start custom-text-black" data-bind="text: SelectedBillingAddress != null ? SelectedBillingAddress.City + ' - ' + SelectedBillingAddress.AddressStreet + ' ' + SelectedBillingAddress.AddressNumber + (SelectedBillingAddress.Area != null && SelectedBillingAddress.Area != '' ? ', ' + SelectedBillingAddress.Area : '') : ''"></div>
+        </div>
+        <div class="custom-flex-22"></div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-20"></div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold insert-customer-action-button" data-bind="click: $root.DeleteCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('DeleteCaps', null)"></div>&nbsp;<i class="fa fa-times custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold insert-customer-action-button" data-bind="click: $root.ClearCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('ClearCaps', null)"></div>&nbsp;<i class="fa fa-sync custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-20 custom-flex-center">
+                <!-- ko if: $root.copiedCustomer() == null -->
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold insert-customer-action-button" data-bind="click: $root.CopyCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('CopyCaps', null)"></div>&nbsp;<i class="fa fa-copy custom-fa-faint"></i></button>
+                <!-- /ko -->
+                <!-- ko if: $root.copiedCustomer() != null -->
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold insert-customer-action-button" data-bind="click: $root.PasteCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('PasteCaps', null)"></div>&nbsp;<i class="fa fa-paste custom-fa-faint"></i></button>
+                <!-- /ko -->
+            </div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold insert-customer-action-button" data-bind="click: $root.AddCustomer, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('SaveCaps', null)"></div>&nbsp;<i class="fa fa-save custom-fa-faint"></i></button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="customer-insert-tab-address-template">
+    <div class="custom-full-height custom-flex-column insert-address" data-bind="with: $root.newAddress">
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-27 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: AddressStreet, attr: { 'placeholder' : language.Translate('Address', null)}" type="text" autocomplete="off" tabindex="1" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-7 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressNumberColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-12 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: AddressNumber, attr: { 'placeholder' : language.Translate('Number', null)}" type="text" autocomplete="off" tabindex="2" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-10 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('VerticalStreetColon', null)"></div>
+            <div class="custom-flex-27 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: VerticalStreet, attr: { 'placeholder' : language.Translate('Street', null)}" type="text" autocomplete="off" tabindex="3" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AreaColon', null)"></div>
+            <div class="custom-flex-27 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: Area, attr: { 'placeholder' : language.Translate('Area', null)}" type="text" autocomplete="off" tabindex="4" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('ZipCodeColon', null)"></div>
+            <div class="custom-flex-12 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: ZipCode, attr: { 'placeholder' : language.Translate('ZipCode', null)}" type="text" autocomplete="off" tabindex="5" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-8 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('CityColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-27 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: City, attr: { 'placeholder' : language.Translate('City', null)}" type="text" autocomplete="off" tabindex="6" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-11 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('BellColon', null)"></div>
+            <div class="custom-flex-21 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: Bell, attr: { 'placeholder' : language.Translate('Bell', null)}" type="text" autocomplete="off" tabindex="7" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-8 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('FloorColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-14 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: Floor, attr: { 'placeholder' : language.Translate('Floor', null)}" type="text" autocomplete="off" tabindex="8" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressTypeColon', null)"></div>
+            <div class="custom-flex-5 custom-flex-center dropdown-menu-container">
+                <div class="custom-full-width custom-full-height custom-flex-center custom-cursor" data-toggle="dropdown">
+                    <i class="fa fa-caret-down custom-fa-faint"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-list dropdown-menu-list-left dropdown-menu-list-length-extra-small" data-bind="foreach: $root.addressOptions">
+                    <li class="dropdown-menu-list-item" data-bind="event: { mousedown: $root.SelectAddressType.bind($data, $data) }"><span data-bind="text: Description"></span></li>
+                </ul>
+            </div>
+            <div class="custom-flex-20 custom-flex-start custom-text-black" data-bind="text: $root.addressTypeOptions()[AddressType]"></div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-15 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('AddressNoteColon', null)"></div>
+            <div class="custom-flex-43 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: Notes, attr: { 'placeholder' : language.Translate('Comment', null)}" type="text" autocomplete="off" tabindex="9" />
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-13 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('FriendlyNameColon', null)"></div>
+            <div class="custom-flex-27 custom-flex-start custom-text-black">
+                <input class="custom-input insert-address-input" data-bind="value: FriendlyName, attr: { 'placeholder' : language.Translate('FriendlyName', null)}" type="text" autocomplete="off" tabindex="10" />
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LongitudeColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-28 custom-flex-start custom-text-black">
+                <label class="custom-label custom-flex-start custom-text-black insert-address-label" data-bind="text: Longitude"></label>
+            </div>
+            <div class="custom-flex-2"></div>
+            <div class="custom-flex-9 custom-flex-start custom-text-black custom-text-bold" data-bind="text: language.Translate('LatitudeColon', null)"></div>
+            <div class="custom-flex-2 custom-flex-center custom-text-red custom-text-bold"><i class="fa fa-exclamation-circle custom-fa-faint"></i></div>
+            <div class="custom-flex-28 custom-flex-start custom-text-black">
+                <label class="custom-label custom-flex-start custom-text-black insert-address-label" data-bind="text: Latitude"></label>
+            </div>
+            <div class="custom-flex-15 custom-flex-center">
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold insert-address-map-button" data-bind="click: $root.ShowInsertMap, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('MapCaps', null)"></div>&nbsp;<i class="fa fa-map custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-5 custom-flex-center">
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold refresh-address-map-button" data-bind="click: $root.RefreshMapMarkers, clickBubble: false" tabindex="-1"><i class="fa fa-map-marker-alt custom-fa-faint"></i></button>
+            </div>
+        </div>
+        <div class="custom-flex-4 custom-flex-row">
+            <div class="custom-flex-100 custom-flex-end custom-text-red custom-text-small" data-bind="text: language.Translate('InaccurateGeolocationMessage', null), visible: (Proximity == geocoderLocationTypeDescriptionEnum.Approximate || Proximity == geocoderLocationTypeDescriptionEnum.Unknown)"></div>
+        </div>
+        <div class="custom-flex-48 custom-flex-center">
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+        <div class="custom-flex-8 custom-flex-row">
+            <div class="custom-flex-40"></div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-error custom-flex-center custom-text-white custom-text-bold insert-address-action-button" data-bind="click: $root.DeleteAddress, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('DeleteCaps', null)"></div>&nbsp;<i class="fa fa-times custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-warning custom-flex-center custom-text-black custom-text-bold insert-address-action-button" data-bind="click: $root.ClearAddress, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('ClearCaps', null)"></div>&nbsp;<i class="fa fa-sync custom-fa-faint"></i></button>
+            </div>
+            <div class="custom-flex-20 custom-flex-center">
+                <button class="custom-default-button custom-default-button-success custom-flex-center custom-text-black custom-text-bold insert-address-action-button" data-bind="click: $root.AddAddress, clickBubble: false" tabindex="-1"><div data-bind="text: language.Translate('AddCaps', null)"></div>&nbsp;<i class="fa fa-plus custom-fa-faint"></i></button>
+            </div>
+        </div>
+    </div>
+</script>
